@@ -1,0 +1,4 @@
+- source: simple.qmd
+  quarto-pub:
+    - id: 4199a0ca-31d1-433b-83a4-5d636eef9ae2
+      url: 'https://nielsbantilan.quarto.pub/validating-and-testing-r-dataframes-with-pandera-and-reticulate'
