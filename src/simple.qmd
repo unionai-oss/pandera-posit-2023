@@ -1,207 +1,244 @@
 ---
 title: "Validating and Testing R DataFrames with `pandera` and `reticulate`"
 author: Niels Bantilan
-date: March 30, 2023
+date: Sept 30, 2023
+theme: default
 format:
   revealjs:
     slide-number: true
-    footer: <https://www.union.ai/pandera>
+    mermaid:
+      theme: default
 ---
 
-## Who am I?
+![](static/hook_data_scientist_job.png){width=500}
 
-**Chief ML Engineer @ Union.ai**
+::: {.notes}
+In October 2012, data science was named the sexiest job by the Harvard Business
+Review. But you know what isn't sexy?
+:::
 
-- Author of Pandera 🐼✅
-- Author of UnionML 🤖
-- Core maintainer of Flyte 🛩
-- Background: Biology, Public Health 🧪🧫
-- Stumbled into DS/ML/Programming 💻
-- Learned Python and R in parallel 🔀
+## Dealing with invalid data 😭
 
-## Pandera Crash Course
+![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExajh4dTl3d2Z0YTRtaTlkeHgxd2trcDJsb2d2YmZzbW1kOTczMndzdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/XCxcmEQWxDdc8qsd2R/giphy.gif){width=500}
 
-[▶️ Try Pandera](https://pandera.readthedocs.io/en/stable/lite/retro/notebooks/?path=try_pandera.ipynb)
+::: {.notes}
+Dealing with Invalid Data, which can often feel like a losing battle when you
+don't realize something that corrupted or otherwise incorrect data has passed
+through your pipeline.
+:::
 
-## Pandera with R
+## Data validation is important...
 
-Use `reticulate`!
+... but tedious 😑
 
-```{r}
-#| echo: true
-library(reticulate)
-library(dplyr)
+. . .
 
-use_condaenv("pandera-nyhackr")
+> "Garbage in, garbage out"
+
+. . .
+
+> "Data-centric machine learning"
+
+. . .
+
+> "Data as code"
+
+. . .
+
+*"But I just want to train my model!"*
+
+::: {.notes}
+We all know that data quality is super important.
+
+...
+
+My job, in this talk, is not to convince you that data validation is the most attractive
+part of data science, but I do want to convince you that...
+:::
+
+## Data validation can be fun 🎉
+
+. . .
+
+**Data validation is like unit testing for your data**
+
+. . .
+
+```
+$ run pipeline
 ```
 
-## Validation packages in R
+- ✅ `dataset_x_validation`
+- ✅ `dataset_y_validation`
+- ✅ `dataset_z_validation`
 
-Excellent validation packages already exist in R 😎
+. . .
 
-- ✅ [`validate`](https://github.com/data-cleaning/validate)
-- 🎯 [`pointblank`](https://github.com/rich-iannone/pointblank)
+### ✨🍪✨ {.larger}
 
-## Define a Pandera Schema
+::: {.notes}
+And the way you do that is to reframe data validation as unit tests for your data.
 
-```{python}
-#| echo: true
-import numpy as np
-import pandas as pd
-import pandera as pa
-from pandera.typing import Series
+This way when you run your data pipelines you can get that little dopamine hit
+knowing that your datasets are valid.
+:::
 
+## A day in the life of a data scientist {.smaller}
 
-class Schema(pa.DataFrameModel):
-    item: Series[str] = pa.Field(isin=["apple", "orange"], coerce=True)
-    price: Series[float] = pa.Field(gt=0, coerce=True, nullable=True)
+```{mermaid}
+%%| fig-width: 10
+%%| fig-height: 5
 
-
-python_data = pd.DataFrame.from_records([
-    {"item": "orange", "price": 0.75},
-    {"item": "orange", "price": np.nan},
-])
+flowchart LR
+  A[clean data] --> S[split data]
+  S --> B[train model]
+  B --> C[evaluate model]
+  S --> C
 ```
 
-## Define some R data
+::: {.notes}
+Let me illustrate this with an all too familiar story.
 
-```{r}
-#| echo: true
-r_data <- data.frame(
-    item = c("apple", "orange", "orange"),
-    price = c(0.5, 0.75, NaN)
-)
+In one of my past jobs I had to train a model, so my pipeline looked something
+like this:
+:::
+
+## A day in the life of a data scientist {.smaller}
+
+```{mermaid}
+%%| fig-width: 10
+%%| fig-height: 5
+
+flowchart LR
+  A[clean data] --> S[split data]
+  S --> B[train model]
+  B --> C[evaluate model]
+  S --> C
+
+  style B fill:#e0e0e0,stroke:#333
 ```
 
-## Validate Pandas DataFrames
+::: {.notes}
+Now the training step can take a long time to complete, so I had to wait a few
+days for that to complete...
+:::
 
-```{r}
-#| echo: true
-# validate the python data
-print(py$Schema$validate(py$python_data))
+## A day in the life of a data scientist {.smaller}
+
+```{mermaid}
+%%| fig-width: 10
+%%| fig-height: 5
+
+flowchart LR
+  A[clean data] --> S[split data]
+  S --> B[train model]
+  B --> C[evaluate model]
+  S --> C
+
+  style B fill:#8cffb4,stroke:#333
+  style C fill:#ff8c8c,stroke:#333
 ```
 
-## Validate R DataFrames
+::: {.notes}
+Only to find that a bug in the way I was creating the test data caused my
+evaluation step to fail.
 
-It just works!
-
-```{r}
-#| echo: true
-# validate an R dataframe
-print(py$Schema$validate(r_data))
-```
-
-# What if the Data is Invalid?
-
-## Define Some Invalid Data
-
-```{r}
-#| echo: true
-invalid_data <- data.frame(
-    item = c("apple", "orange", "orangee"),
-    price = c(-1.0, 0.75, NaN)
-)
-```
-
-## Catch the Python Exception
-
-```{r}
-#| echo: true
-validated_data <- tryCatch({
-    py$Schema$validate(invalid_data, lazy=TRUE)
-}, error=function(err) {
-    exception <<- attr(py_last_error(), "exception")
-    return(NULL)
-})
-```
-
-## Get the Failure Cases
-
-```{r}
-#| echo: true
-# get failed rows don't forget the 0- to 1-based index conversion!
-failure_cases <- exception$failure_cases
-failed_rows <- as.character(failure_cases$index + 1)
-print(failure_cases)
-```
-
-## Filter out Invalid Rows
-
-```{r}
-#| echo: true
-# filter the data to only include valid rows
-filtered_data <- invalid_data |> filter(!(rownames(invalid_data) %in% failed_rows))
-
-print(filtered_data)
-```
+Had I made some assertions about what the test data should look like at the
+split data step, I would have caught this data bug early before wasting all of
+that time training the model.
+:::
 
 
-# Synthesize Test Data with Pandera
+## A day in the life of a data scientist {.smaller}
 
-## Just call `Schema$example`
+**Unit Tests**
 
-```{r}
-#| echo: true
-print(py$Schema$example(size = as.integer(5)))
-```
+- ✅ `test_clean_data`
+- ✅ `test_split_data`
+- ✅ `test_train_model`
+- ✅ `test_evaluate_model`
 
-## Useful for unit testing!
+. . .
 
-```{r}
-#| echo: true
-process_data <- function(data, in_stock) {
-    py$Schema$validate(data, lazy=TRUE) |>
-        mutate(in_stock=in_stock)
-}
+**Data Tests**
 
-test_process_data <- function() {
-    mock_data <- py$Schema$example(size = as.integer(5))
-    output <- process_data(mock_data, TRUE)
-    print(output)
-}
+- ✅ `validate_cleaned_data`
+- ✅ `validate_split_data`
+- ✅ `validate_training_data`
+- ✅ `validate_metrics_data`
 
-test_process_data()
-```
 
-## Catch bugs early!
+::: {.notes}
+So just like have unit tests for your functions, you can also define
+data tests for your data as it progresses through your data and modeling pipelines.
 
-Let's create an invalid schema
+This way you can get that little dopamine hit when your data validations pass
+with all of those green checkmarks.
 
-```{python}
-#| echo: true
-class InvalidSchema(pa.DataFrameModel):
-    item: Series[str]
-    price: Series[float]
-```
+I can tell you from experience, it really makes you feel safe and confident
+knowing that your data is as you expect it to be...
+:::
 
-## Catch bugs early!
+## A day in the life of a data scientist {.smaller}
 
-```{r}
-#| echo: true
+**Unit Tests**
 
-test_process_data_error <- function() {
-    mock_data <- py$InvalidSchema$example(size = as.integer(1))
-    tryCatch({
-        process_data(mock_data, TRUE)
-    }, error=function(err) {
-        exception <<- attr(py_last_error(), "exception")
-        return(NULL)
-    })
-    print(exception$failure_cases)
-}
+- ✅ `test_clean_data`
+- ✅ `test_split_data`
+- ✅ `test_train_model`
+- ❌ `test_evaluate_model`
 
-test_process_data_error()
-```
+**Data Tests**
 
-# Takeaways
+- ✅ `validate_cleaned_data`
+- ❌ `validate_split_data`
+- ✅ `validate_training_data`
+- ✅ `validate_metrics_data`
 
-- Pandera lets you define schemas or "statistical types" for your dataframes
-- You can use it in R with `reticulate`!
-- Challenge: how can we break this?
 
-# Thanks!
+::: {.notes}
+or that something went wrong and you know exactly where to start looking for
+a bug in your data.
 
-- Twitter: `@cosmicBboy`
-- Slides: [https://github.com/unionai-oss/pandera-nyhackr-20230330](https://github.com/unionai-oss/pandera-nyhackr-20230330)
-- Repo: [https://github.com/unionai-oss/pandera](https://github.com/unionai-oss/pandera)
-- Discord: [https://discord.gg/vyanhWuaKB](https://discord.gg/vyanhWuaKB)
+But this benefit doesn't come for free...
+:::
+
+## The data validation journey
+
+::: {.notes}
+Like many things in life, the journey is as important as the destination.
+:::
+
+::: {.notes}
+I built pandera to lower the barrier to maintaining data hygiene
+:::
+
+## How `pandera` works
+
+::: {.notes}
+Now this is all well and good if you're using Python, but what about if you're
+using R?
+:::
+
+## Using `pandera` in R via `reticulate`
+
+::: {.notes}
+I went down this path with some trepidation that pandera will break in R, but
+it just works!
+:::
+
+## Get `pandera` set up on your stack in 5 minutes
+
+---
+
+[insert data validation meme here]
+
+::: {.notes}
+By understanding what counts as valid data, creating schemas for them, and using
+these schemas across your Python and R stack, you get a single source of truth
+for your data contracts. These contracts serve as data documentation for you and
+your team *and* run-time validators for your data in both development and production
+contexts. `pandera` lowers the barrier to maintaining data hygiene so you can spend
+less time worrying about the correctness of your data and more time analyzing, visualizing,
+and modeling them.
+:::
