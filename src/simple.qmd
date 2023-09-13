@@ -22,9 +22,10 @@ Review. But you know what isn't sexy?
 ![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExajh4dTl3d2Z0YTRtaTlkeHgxd2trcDJsb2d2YmZzbW1kOTczMndzdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/XCxcmEQWxDdc8qsd2R/giphy.gif){width=500}
 
 ::: {.notes}
-Dealing with Invalid Data, which can often feel like a losing battle when you
+Dealing with invalid Data, which can often feel like a losing battle when you
 don't realize something that corrupted or otherwise incorrect data has passed
-through your pipeline.
+through your pipeline. What's worse is that downstream consumers of that data
+are actually relying on you to make sure that the data is clean and correct.
 :::
 
 ## Data validation is important...
@@ -60,7 +61,7 @@ part of data science, but I do want to convince you that...
 
 . . .
 
-**Data validation is like unit testing for your data**
+Data validation is like unit testing for your data
 
 . . .
 
@@ -79,8 +80,37 @@ $ run pipeline
 ::: {.notes}
 And the way you do that is to reframe data validation as unit tests for your data.
 
-This way when you run your data pipelines you can get that little dopamine hit
-knowing that your datasets are valid.
+This way whenever you run your data pipelines you'll know that your datasets
+are valid and you can get that little dopamine hit seeing your data tests pass.
+:::
+
+## So what? 🤷‍♂️
+
+. . .
+
+Data validation is about **understanding** what counts as valid data and capturing
+that understanding as a **schema**.
+
+. . .
+
+By using `pandera` in your Python and R stacks, you get:
+
+::: {.incremental}
+- ⭐️ A single source of truth
+- 📖 Data documentation as code
+- 🔎 Run-time dataframe enforcers
+:::
+
+::: {.notes}
+Framing data validation as fun is really a trojan horse for getting you to do
+something that yields a lot of practical benefits, because...
+
+- A single source of truth for you data schemas
+- Data documentation as code for you and your team to understand what your data looks like
+- Run-time dataframe enforcers in development, testing, and production contexts
+
+So you can spend less time worrying about the correctness of your data and
+more time analyzing, visualizing, and modeling them.
 :::
 
 ## A day in the life of a data scientist {.smaller}
@@ -115,7 +145,7 @@ flowchart LR
   B --> C[evaluate model]
   S --> C
 
-  style B fill:#e0e0e0,stroke:#333
+  style B fill:#e0e0e0,stroke:#7f7f7f
 ```
 
 ::: {.notes}
@@ -135,8 +165,8 @@ flowchart LR
   B --> C[evaluate model]
   S --> C
 
-  style B fill:#8cffb4,stroke:#333
-  style C fill:#ff8c8c,stroke:#333
+  style B fill:#8cffb4,stroke:#2bb55b
+  style C fill:#ff8c8c,stroke:#bc3131
 ```
 
 ::: {.notes}
@@ -197,10 +227,10 @@ knowing that your data is as you expect it to be...
 
 
 ::: {.notes}
-or that something went wrong and you know exactly where to start looking for
-a bug in your data.
+... or that something went wrong and you know exactly where to start looking for
+the bug that caused the error.
 
-But this benefit doesn't come for free...
+But these benefits doesn't come for free...
 :::
 
 ## The data validation journey
@@ -209,36 +239,384 @@ But this benefit doesn't come for free...
 Like many things in life, the journey is as important as the destination.
 :::
 
+Implementing a data pipeline: before
+
+```{mermaid}
+%%| fig-width: 10
+%%| fig-height: 5
+
+flowchart LR
+  G[Define Goal]
+  E[Explore]
+  I[Implement]
+  S[Spot Check]
+  P{Pass?}
+  C[Continue]
+
+  G --> E
+  E --> I
+  I --> S
+  S --> P
+  P -- Yes --> C
+  P -- No --> E
+```
+
+## The data validation journey
+
+Implementing a data pipeline: after
+
+```{mermaid}
+%%| fig-width: 10
+%%| fig-height: 5
+
+flowchart LR
+  G[Define Goal]
+  E[Explore]
+  I[Implement]
+  T[Define Schema]
+  S[Validate]
+  P{Pass?}
+  C[Continue]
+
+  G --> E
+  E --> I
+  E --> T
+  I --> S
+  T --> S
+  S --> P
+  P -- Yes --> C
+  P -- No --> E
+
+  style S fill:#8cffb4,stroke:#2bb55b
+  style T fill:#FFF2CC,stroke:#e2b128
+```
+
 ::: {.notes}
-I built pandera to lower the barrier to maintaining data hygiene
+Data validation is a never-ending process of understanding your data, encoding
+your understanding as a schemas, testing it against live data, and re-understanding
+your data as it shifts around in the real world.
+:::
+
+---
+
+There's no substitute for understanding your data with your own eyes 👀
+
+. . .
+
+![](static/sisyphus.png){height=500}
+
+::: {.notes}
+But once you gain that understanding at a particular point in time, it can seem
+like a sisyphian task to define and maintain the schemas that you need to make
+sure your data are valid.
+
+I built pandera to lower the barrier to creating and maintaining the practice
+data hygiene in your organization.
 :::
 
 ## How `pandera` works
+
+`pandera` provides a flexible and light-weight toolkit for data validation.
+
+## Define Goal {.smaller}
+
+Predict the price of items a produce transaction dataset
+
+```{python}
+#| echo: true
+import pandas as pd
+
+transactions = pd.DataFrame.from_records([
+    {"item": "orange", "price": 0.75},
+    {"item": "apple", "price": 0.50},
+    {"item": "banana", "price": 0.25},
+])
+```
+
+## Explore the data {.smaller}
+
+```{python}
+transactions.set_index("item").plot.barh();
+```
+
+## Capture our understanding {.smaller}
+
+::: {.incremental}
+- `item` is a categorical variable represented as a string.
+- `item` contains three possible values: `orange`, `apple`, and `banana`.
+- `price` is an integer.
+- `price` is a positive value.
+- neither column can contain null values
+:::
+
+## Define a schema {.smaller}
+
+. . .
+
+Class-based API
+
+```{python}
+#| echo: true
+import pandera as pa
+
+class Schema(pa.DataFrameModel):
+    item: str = pa.Field(
+        isin=["apple", "orange", "banana"],
+        nullable=False,
+    )
+    price: float = pa.Field(
+        gt=0,
+        nullable=False,
+    )
+```
+
+. . .
+
+Object-based API
+
+```{python}
+#| echo: true
+schema = pa.DataFrameSchema({
+    "item": pa.Column(
+        str,
+        pa.Check.isin(["apple", "orange", "banana"]),
+        nullable=False,
+    ),
+    "price": pa.Column(
+        float,
+        pa.Check.gt(0),
+        nullable=False,
+    )
+})
+```
+
+## Validate the data {.smaller}
+
+If the data are valid, `Schema.validate` simply returns the valid data:
+
+. . .
+
+```{python}
+#| echo: true
+
+Schema.validate(transactions)
+```
+
+## Validate the data {.smaller}
+
+But if not, it raises an exception:
+
+. . .
+
+```{python}
+#| echo: true
+invalid_data = pd.DataFrame.from_records([
+    {"item": "apple", "price": 0.75},
+    {"item": "orange", "price": float("nan")},
+    {"item": "squash", "price": -1000.0},
+])
+
+try:
+    Schema.validate(invalid_data, lazy=True)
+except pa.errors.SchemaErrors as exc:
+    failure_cases = exc.failure_cases
+```
+
+. . .
+
+```{python}
+failure_cases
+```
+
+## Functional Validation {.smaller}
+
+```{python}
+#| echo: true
+from pandera.typing import DataFrame
+
+@pa.check_types(lazy=True)
+def clean_data(raw_data) -> DataFrame[Schema]:
+    return raw_data
+```
+ 
+. . .
+
+```{python}
+#| echo: true
+try:
+    clean_data(invalid_data)
+except pa.errors.SchemaErrors as exc:
+    failure_cases = exc.failure_cases
+```
+
+. . .
+
+```{python}
+failure_cases
+```
 
 ::: {.notes}
 Now this is all well and good if you're using Python, but what about if you're
 using R?
 :::
 
-## Using `pandera` in R via `reticulate`
+## Using `pandera` in R via `reticulate` {.smaller}
 
 ::: {.notes}
-I went down this path with some trepidation that pandera will break in R, but
-it just works!
+I went down this path with some trepidation that pandera will break in R, but...
 :::
 
-## Get `pandera` set up on your stack in 5 minutes
+```{r}
+#| echo: true
+library(reticulate)
+library(dplyr)
+
+use_condaenv("pandera-posit-2023")
+```
+
+## It just works! 🔥 {.smaller}
+
+```{r}
+#| echo: true
+r_data <- data.frame(
+    item = c("applee", "orange", "orange"),
+    price = c(0.5, 0.75, NaN)
+)
+```
+
+```{r}
+#| echo: true
+py$Schema$validate(py$transactions)
+```
+
+## Catch the Python Exception {.smaller}
+
+```{r}
+#| echo: true
+validated_data <- tryCatch({
+    py$Schema$validate(r_data, lazy=TRUE)
+}, error=function(err) {
+    exception <<- attr(py_last_error(), "exception")
+    return(NULL)
+})
+```
+
+. . .
+
+Get the failure cases
+
+```{r}
+#| echo: true
+# get failed rows don't forget the 0- to 1-based index conversion!
+failure_cases <- exception$failure_cases
+failed_rows <- as.character(failure_cases$index + 1)
+print(failure_cases)
+```
+
+## Filter out Invalid Rows {.smaller}
+
+```{r}
+#| echo: true
+# filter the data to only include valid rows
+filtered_data <- r_data |> filter(!(rownames(r_data) %in% failed_rows))
+print(filtered_data)
+```
+
+## Get `pandera` set up on your stack in 5 minutes {.smaller}
+
+Install pandera
+
+:::: {.columns}
+
+::: {.column}
+Python
+```bash
+pip install pandera
+```
+:::
+
+::: {.column}
+R
+```r
+install.packages("reticulate")
+```
+:::
+
+::::
+
+. . .
+
+Define and import schema
+
+:::: {.columns}
+
+::: {.column}
+```python
+# schema.py
+import pandera as pa
+
+class Schema(pa.DataFrameModel):
+    col1: int
+    col2: float
+    col2: str
+```
+:::
+
+::: {.column}
+```r
+schema <- import("schema")
+```
+:::
+
+::::
+
+. . .
+
+Validate away!
+
+:::: {.columns}
+
+::: {.column}
+```python
+python_dataframe = ...
+
+Schema.validate(python_dataframe)
+```
+:::
+
+::: {.column}
+```r
+library(reticulate)
+
+r_dataframe <- ...
+
+py$Schema$validate(py$python_data)
+```
+:::
+
+::::
 
 ---
 
-[insert data validation meme here]
+<br>
+<br>
+<br>
+
+![](static/data_please_validate_me.jpeg){height=300 fig-align="center"}
 
 ::: {.notes}
 By understanding what counts as valid data, creating schemas for them, and using
 these schemas across your Python and R stack, you get a single source of truth
-for your data contracts. These contracts serve as data documentation for you and
+for your data schemas. These schemas serve as data documentation for you and
 your team *and* run-time validators for your data in both development and production
 contexts. `pandera` lowers the barrier to maintaining data hygiene so you can spend
 less time worrying about the correctness of your data and more time analyzing, visualizing,
 and modeling them.
+
+Pandera posit talk notes:
+- “I built pandera”: introduce it
+- clarify what pandera (python) and reticulate (R)
+- consider de-emphasize reticulate
+- only show class-based API
+- maybe explain “schema” a bit the first time you mention it?
 :::

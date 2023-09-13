@@ -30,6 +30,71 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="simple_files/libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="simple_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -363,7 +428,7 @@ Niels Bantilan
 <h2>Dealing with invalid data 😭</h2>
 
 <img data-src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExajh4dTl3d2Z0YTRtaTlkeHgxd2trcDJsb2d2YmZzbW1kOTczMndzdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/XCxcmEQWxDdc8qsd2R/giphy.gif" width="500" class="r-stretch"><aside class="notes">
-<p>Dealing with Invalid Data, which can often feel like a losing battle when you don’t realize something that corrupted or otherwise incorrect data has passed through your pipeline.</p>
+<p>Dealing with invalid Data, which can often feel like a losing battle when you don’t realize something that corrupted or otherwise incorrect data has passed through your pipeline. What’s worse is that downstream consumers of that data are actually relying on you to make sure that the data is clean and correct.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -416,7 +481,7 @@ Niels Bantilan
 <section id="data-validation-can-be-fun" class="slide level2">
 <h2>Data validation can be fun 🎉</h2>
 <div class="fragment">
-<p><strong>Data validation is like unit testing for your data</strong></p>
+<p>Data validation is like unit testing for your data</p>
 </div>
 <div class="fragment">
 <pre><code>$ run pipeline</code></pre>
@@ -430,7 +495,42 @@ Niels Bantilan
 <h3 class="larger" id="section">✨🍪✨</h3>
 <aside class="notes">
 <p>And the way you do that is to reframe data validation as unit tests for your data.</p>
-<p>This way when you run your data pipelines you can get that little dopamine hit knowing that your datasets are valid.</p>
+<p>This way whenever you run your data pipelines you’ll know that your datasets are valid and you can get that little dopamine hit seeing your data tests pass.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="so-what" class="slide level2">
+<h2>So what? 🤷‍♂️</h2>
+<div class="fragment">
+<p>Data validation is about <strong>understanding</strong> what counts as valid data and capturing that understanding as a <strong>schema</strong>.</p>
+</div>
+<div class="fragment">
+<p>By using <code>pandera</code> in your Python and R stacks, you get:</p>
+<div>
+<ul>
+<li class="fragment">⭐️ A single source of truth</li>
+<li class="fragment">📖 Data documentation as code</li>
+<li class="fragment">🔎 Run-time dataframe enforcers</li>
+</ul>
+</div>
+<aside class="notes">
+<p>Framing data validation as fun is really a trojan horse for getting you to do something that yields a lot of practical benefits, because…</p>
+<ul>
+<li>A single source of truth for you data schemas</li>
+<li>Data documentation as code for you and your team to understand what your data looks like</li>
+<li>Run-time dataframe enforcers in development, testing, and production contexts</li>
+</ul>
+<p>So you can spend less time worrying about the correctness of your data and more time analyzing, visualizing, and modeling them.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -487,7 +587,7 @@ Niels Bantilan
   B --&gt; C[evaluate model]
   S --&gt; C
 
-  style B fill:#e0e0e0,stroke:#333
+  style B fill:#e0e0e0,stroke:#7f7f7f
 </pre>
 </div>
 </div>
@@ -519,8 +619,8 @@ Niels Bantilan
   B --&gt; C[evaluate model]
   S --&gt; C
 
-  style B fill:#8cffb4,stroke:#333
-  style C fill:#ff8c8c,stroke:#333
+  style B fill:#8cffb4,stroke:#2bb55b
+  style C fill:#ff8c8c,stroke:#bc3131
 </pre>
 </div>
 </div>
@@ -592,8 +692,8 @@ Niels Bantilan
 <li>✅ <code>validate_metrics_data</code></li>
 </ul>
 <aside class="notes">
-<p>or that something went wrong and you know exactly where to start looking for a bug in your data.</p>
-<p>But this benefit doesn’t come for free…</p>
+<p>… or that something went wrong and you know exactly where to start looking for the bug that caused the error.</p>
+<p>But these benefits doesn’t come for free…</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -621,8 +721,65 @@ Niels Bantilan
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+<p>Implementing a data pipeline: before</p>
+<div class="cell" data-reveal="true" data-fig-width="10" data-fig-height="5">
+<div class="cell-output-display">
+<div>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+  G[Define Goal]
+  E[Explore]
+  I[Implement]
+  S[Spot Check]
+  P{Pass?}
+  C[Continue]
+
+  G --&gt; E
+  E --&gt; I
+  I --&gt; S
+  S --&gt; P
+  P -- Yes --&gt; C
+  P -- No --&gt; E
+</pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-data-validation-journey-1" class="slide level2">
+<h2>The data validation journey</h2>
+<p>Implementing a data pipeline: after</p>
+<div class="cell" data-reveal="true" data-fig-width="10" data-fig-height="5">
+<div class="cell-output-display">
+<div>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+  G[Define Goal]
+  E[Explore]
+  I[Implement]
+  T[Define Schema]
+  S[Validate]
+  P{Pass?}
+  C[Continue]
+
+  G --&gt; E
+  E --&gt; I
+  E --&gt; T
+  I --&gt; S
+  T --&gt; S
+  S --&gt; P
+  P -- Yes --&gt; C
+  P -- No --&gt; E
+
+  style S fill:#8cffb4,stroke:#2bb55b
+  style T fill:#FFF2CC,stroke:#e2b128
+</pre>
+</div>
+</div>
+</div>
+</div>
 <aside class="notes">
-<p>I built pandera to lower the barrier to maintaining data hygiene</p>
+<p>Data validation is a never-ending process of understanding your data, encoding your understanding as a schemas, testing it against live data, and re-understanding your data as it shifts around in the real world.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -635,8 +792,169 @@ Niels Bantilan
           display:block!important;
       }</style></aside>
 </section>
+<section class="slide level2">
+
+<p>There’s no substitute for understanding your data with your own eyes 👀</p>
+<div class="fragment">
+<p><img data-src="static/sisyphus.png" height="500"></p>
+<aside class="notes">
+<p>But once you gain that understanding at a particular point in time, it can seem like a sisyphian task to define and maintain the schemas that you need to make sure your data are valid.</p>
+<p>I built pandera to lower the barrier to creating and maintaining the practice data hygiene in your organization.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
 <section id="how-pandera-works" class="slide level2">
 <h2>How <code>pandera</code> works</h2>
+<p><code>pandera</code> provides a flexible and light-weight toolkit for data validation.</p>
+</section>
+<section id="define-goal" class="slide level2 smaller">
+<h2>Define Goal</h2>
+<p>Predict the price of items a produce transaction dataset</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a>transactions <span class="op">=</span> pd.DataFrame.from_records([</span>
+<span id="cb2-4"><a href="#cb2-4"></a>    {<span class="st">"item"</span>: <span class="st">"orange"</span>, <span class="st">"price"</span>: <span class="fl">0.75</span>},</span>
+<span id="cb2-5"><a href="#cb2-5"></a>    {<span class="st">"item"</span>: <span class="st">"apple"</span>, <span class="st">"price"</span>: <span class="fl">0.50</span>},</span>
+<span id="cb2-6"><a href="#cb2-6"></a>    {<span class="st">"item"</span>: <span class="st">"banana"</span>, <span class="st">"price"</span>: <span class="fl">0.25</span>},</span>
+<span id="cb2-7"><a href="#cb2-7"></a>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="explore-the-data" class="slide level2 smaller">
+<h2>Explore the data</h2>
+
+<img data-src="simple_files/figure-revealjs/unnamed-chunk-7-1.png" width="614" class="r-stretch"></section>
+<section id="capture-our-understanding" class="slide level2 smaller">
+<h2>Capture our understanding</h2>
+<div>
+<ul>
+<li class="fragment"><code>item</code> is a categorical variable represented as a string.</li>
+<li class="fragment"><code>item</code> contains three possible values: <code>orange</code>, <code>apple</code>, and <code>banana</code>.</li>
+<li class="fragment"><code>price</code> is an integer.</li>
+<li class="fragment"><code>price</code> is a positive value.</li>
+<li class="fragment">neither column can contain null values</li>
+</ul>
+</div>
+</section>
+<section id="define-a-schema" class="slide level2 smaller">
+<h2>Define a schema</h2>
+<div class="fragment">
+<p>Class-based API</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="im">import</span> pandera <span class="im">as</span> pa</span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="kw">class</span> Schema(pa.DataFrameModel):</span>
+<span id="cb3-4"><a href="#cb3-4"></a>    item: <span class="bu">str</span> <span class="op">=</span> pa.Field(</span>
+<span id="cb3-5"><a href="#cb3-5"></a>        isin<span class="op">=</span>[<span class="st">"apple"</span>, <span class="st">"orange"</span>, <span class="st">"banana"</span>],</span>
+<span id="cb3-6"><a href="#cb3-6"></a>        nullable<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb3-7"><a href="#cb3-7"></a>    )</span>
+<span id="cb3-8"><a href="#cb3-8"></a>    price: <span class="bu">float</span> <span class="op">=</span> pa.Field(</span>
+<span id="cb3-9"><a href="#cb3-9"></a>        gt<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb3-10"><a href="#cb3-10"></a>        nullable<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb3-11"><a href="#cb3-11"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment">
+<p>Object-based API</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>schema <span class="op">=</span> pa.DataFrameSchema({</span>
+<span id="cb4-2"><a href="#cb4-2"></a>    <span class="st">"item"</span>: pa.Column(</span>
+<span id="cb4-3"><a href="#cb4-3"></a>        <span class="bu">str</span>,</span>
+<span id="cb4-4"><a href="#cb4-4"></a>        pa.Check.isin([<span class="st">"apple"</span>, <span class="st">"orange"</span>, <span class="st">"banana"</span>]),</span>
+<span id="cb4-5"><a href="#cb4-5"></a>        nullable<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb4-6"><a href="#cb4-6"></a>    ),</span>
+<span id="cb4-7"><a href="#cb4-7"></a>    <span class="st">"price"</span>: pa.Column(</span>
+<span id="cb4-8"><a href="#cb4-8"></a>        <span class="bu">float</span>,</span>
+<span id="cb4-9"><a href="#cb4-9"></a>        pa.Check.gt(<span class="dv">0</span>),</span>
+<span id="cb4-10"><a href="#cb4-10"></a>        nullable<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb4-11"><a href="#cb4-11"></a>    )</span>
+<span id="cb4-12"><a href="#cb4-12"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="validate-the-data" class="slide level2 smaller">
+<h2>Validate the data</h2>
+<p>If the data are valid, <code>Schema.validate</code> simply returns the valid data:</p>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>Schema.validate(transactions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     item  price
+0  orange   0.75
+1   apple   0.50
+2  banana   0.25</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="validate-the-data-1" class="slide level2 smaller">
+<h2>Validate the data</h2>
+<p>But if not, it raises an exception:</p>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>invalid_data <span class="op">=</span> pd.DataFrame.from_records([</span>
+<span id="cb7-2"><a href="#cb7-2"></a>    {<span class="st">"item"</span>: <span class="st">"apple"</span>, <span class="st">"price"</span>: <span class="fl">0.75</span>},</span>
+<span id="cb7-3"><a href="#cb7-3"></a>    {<span class="st">"item"</span>: <span class="st">"orange"</span>, <span class="st">"price"</span>: <span class="bu">float</span>(<span class="st">"nan"</span>)},</span>
+<span id="cb7-4"><a href="#cb7-4"></a>    {<span class="st">"item"</span>: <span class="st">"squash"</span>, <span class="st">"price"</span>: <span class="op">-</span><span class="fl">1000.0</span>},</span>
+<span id="cb7-5"><a href="#cb7-5"></a>])</span>
+<span id="cb7-6"><a href="#cb7-6"></a></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="cf">try</span>:</span>
+<span id="cb7-8"><a href="#cb7-8"></a>    Schema.validate(invalid_data, lazy<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="cf">except</span> pa.errors.SchemaErrors <span class="im">as</span> exc:</span>
+<span id="cb7-10"><a href="#cb7-10"></a>    failure_cases <span class="op">=</span> exc.failure_cases</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>  schema_context column  ... failure_case index
+0         Column   item  ...       squash     2
+1         Column  price  ...          NaN     1
+2         Column  price  ...      -1000.0     2
+
+[3 rows x 6 columns]</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="functional-validation" class="slide level2 smaller">
+<h2>Functional Validation</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a><span class="im">from</span> pandera.typing <span class="im">import</span> DataFrame</span>
+<span id="cb9-2"><a href="#cb9-2"></a></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="at">@pa.check_types</span>(lazy<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="kw">def</span> clean_data(raw_data) <span class="op">-&gt;</span> DataFrame[Schema]:</span>
+<span id="cb9-5"><a href="#cb9-5"></a>    <span class="cf">return</span> raw_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="cf">try</span>:</span>
+<span id="cb10-2"><a href="#cb10-2"></a>    clean_data(invalid_data)</span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="cf">except</span> pa.errors.SchemaErrors <span class="im">as</span> exc:</span>
+<span id="cb10-4"><a href="#cb10-4"></a>    failure_cases <span class="op">=</span> exc.failure_cases</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>  schema_context column  ... failure_case index
+0         Column   item  ...       squash     2
+1         Column  price  ...          NaN     1
+2         Column  price  ...      -1000.0     2
+
+[3 rows x 6 columns]</code></pre>
+</div>
+</div>
 <aside class="notes">
 <p>Now this is all well and good if you’re using Python, but what about if you’re using R?</p>
 <style type="text/css">
@@ -650,11 +968,12 @@ Niels Bantilan
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</div>
 </section>
-<section id="using-pandera-in-r-via-reticulate" class="slide level2">
+<section id="using-pandera-in-r-via-reticulate" class="slide level2 smaller">
 <h2>Using <code>pandera</code> in R via <code>reticulate</code></h2>
 <aside class="notes">
-<p>I went down this path with some trepidation that pandera will break in R, but it just works!</p>
+<p>I went down this path with some trepidation that pandera will break in R, but…</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -666,15 +985,126 @@ Niels Bantilan
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb12-3"><a href="#cb12-3"></a></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="fu">use_condaenv</span>(<span class="st">"pandera-posit-2023"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="get-pandera-set-up-on-your-stack-in-5-minutes" class="slide level2">
+<section id="it-just-works" class="slide level2 smaller">
+<h2>It just works! 🔥</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>r_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb13-2"><a href="#cb13-2"></a>    <span class="at">item =</span> <span class="fu">c</span>(<span class="st">"applee"</span>, <span class="st">"orange"</span>, <span class="st">"orange"</span>),</span>
+<span id="cb13-3"><a href="#cb13-3"></a>    <span class="at">price =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="cn">NaN</span>)</span>
+<span id="cb13-4"><a href="#cb13-4"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>py<span class="sc">$</span>Schema<span class="sc">$</span><span class="fu">validate</span>(py<span class="sc">$</span>transactions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    item price
+1 orange  0.75
+2  apple  0.50
+3 banana  0.25</code></pre>
+</div>
+</div>
+</section>
+<section id="catch-the-python-exception" class="slide level2 smaller">
+<h2>Catch the Python Exception</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>validated_data <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>({</span>
+<span id="cb16-2"><a href="#cb16-2"></a>    py<span class="sc">$</span>Schema<span class="sc">$</span><span class="fu">validate</span>(r_data, <span class="at">lazy=</span><span class="cn">TRUE</span>)</span>
+<span id="cb16-3"><a href="#cb16-3"></a>}, <span class="at">error=</span><span class="cf">function</span>(err) {</span>
+<span id="cb16-4"><a href="#cb16-4"></a>    exception <span class="ot">&lt;&lt;-</span> <span class="fu">attr</span>(<span class="fu">py_last_error</span>(), <span class="st">"exception"</span>)</span>
+<span id="cb16-5"><a href="#cb16-5"></a>    <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
+<span id="cb16-6"><a href="#cb16-6"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<p>Get the failure cases</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># get failed rows don't forget the 0- to 1-based index conversion!</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>failure_cases <span class="ot">&lt;-</span> exception<span class="sc">$</span>failure_cases</span>
+<span id="cb17-3"><a href="#cb17-3"></a>failed_rows <span class="ot">&lt;-</span> <span class="fu">as.character</span>(failure_cases<span class="sc">$</span>index <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="fu">print</span>(failure_cases)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  schema_context column                               check check_number
+1         Column   item isin(['apple', 'orange', 'banana'])            0
+2         Column  price                        not_nullable         NULL
+  failure_case index
+1       applee     0
+2         &lt;NA&gt;     2</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="filter-out-invalid-rows" class="slide level2 smaller">
+<h2>Filter out Invalid Rows</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># filter the data to only include valid rows</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>filtered_data <span class="ot">&lt;-</span> r_data <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span>(<span class="fu">rownames</span>(r_data) <span class="sc">%in%</span> failed_rows))</span>
+<span id="cb19-3"><a href="#cb19-3"></a><span class="fu">print</span>(filtered_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    item price
+1 orange  0.75</code></pre>
+</div>
+</div>
+</section>
+<section id="get-pandera-set-up-on-your-stack-in-5-minutes" class="slide level2 smaller">
 <h2>Get <code>pandera</code> set up on your stack in 5 minutes</h2>
+<p>Install pandera</p>
+<div class="columns">
+<div class="column">
+<p>Python</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1"></a><span class="ex">pip</span> install pandera</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<p>R</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">install.packages</span>(<span class="st">"reticulate"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment">
+<p>Define and import schema</p>
+<div class="columns">
+<div class="column">
+<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1"></a><span class="co"># schema.py</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="im">import</span> pandera <span class="im">as</span> pa</span>
+<span id="cb23-3"><a href="#cb23-3"></a></span>
+<span id="cb23-4"><a href="#cb23-4"></a><span class="kw">class</span> Schema(pa.DataFrameModel):</span>
+<span id="cb23-5"><a href="#cb23-5"></a>    col1: <span class="bu">int</span></span>
+<span id="cb23-6"><a href="#cb23-6"></a>    col2: <span class="bu">float</span></span>
+<span id="cb23-7"><a href="#cb23-7"></a>    col2: <span class="bu">str</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>schema <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="st">"schema"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Validate away!</p>
+<div class="columns">
+<div class="column">
+<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1"></a>python_dataframe <span class="op">=</span> ...</span>
+<span id="cb25-2"><a href="#cb25-2"></a></span>
+<span id="cb25-3"><a href="#cb25-3"></a>Schema.validate(python_dataframe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb26-2"><a href="#cb26-2"></a></span>
+<span id="cb26-3"><a href="#cb26-3"></a>r_dataframe <span class="ot">&lt;-</span> ...</span>
+<span id="cb26-4"><a href="#cb26-4"></a></span>
+<span id="cb26-5"><a href="#cb26-5"></a>py<span class="sc">$</span>Schema<span class="sc">$</span><span class="fu">validate</span>(py<span class="sc">$</span>python_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
 </section>
 <section class="slide level2">
 
-<p>[insert data validation meme here]</p>
+<p><br> <br> <br></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="static/data_please_validate_me.jpeg" height="300"></p>
+</figure>
+</div>
 <aside class="notes">
-<p>By understanding what counts as valid data, creating schemas for them, and using these schemas across your Python and R stack, you get a single source of truth for your data contracts. These contracts serve as data documentation for you and your team <em>and</em> run-time validators for your data in both development and production contexts. <code>pandera</code> lowers the barrier to maintaining data hygiene so you can spend less time worrying about the correctness of your data and more time analyzing, visualizing, and modeling them.</p>
+<p>By understanding what counts as valid data, creating schemas for them, and using these schemas across your Python and R stack, you get a single source of truth for your data schemas. These schemas serve as data documentation for you and your team <em>and</em> run-time validators for your data in both development and production contexts. <code>pandera</code> lowers the barrier to maintaining data hygiene so you can spend less time worrying about the correctness of your data and more time analyzing, visualizing, and modeling them.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -901,6 +1331,44 @@ Niels Bantilan
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

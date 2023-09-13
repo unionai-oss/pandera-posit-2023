@@ -10,6 +10,7 @@ conda activate pandera-posit-2023
 conda install -y -c conda-forge \
     pandera \
     pandera-strategies \
+    matplotlib \
     r-base \
     r-essentials \
     r-reticulate
