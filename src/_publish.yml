@@ -2,3 +2,7 @@
   quarto-pub:
     - id: 4199a0ca-31d1-433b-83a4-5d636eef9ae2
       url: 'https://nielsbantilan.quarto.pub/validating-and-testing-r-dataframes-with-pandera-and-reticulate'
+- source: slides.qmd
+  quarto-pub:
+    - id: 0e0cc8fe-d17c-4ecb-9dc1-451b3c3f70d9
+      url: 'https://nielsbantilan.quarto.pub/validating-and-testing-r-dataframes-with-pandera-and-reticulate-02bb'
