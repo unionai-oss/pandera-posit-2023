@@ -1,13 +1,16 @@
 ---
 title: "Validating and Testing R DataFrames with `pandera` and `reticulate`"
 author: Niels Bantilan
-date: Sept 30, 2023
+date: Sept 20, 2023
 theme: default
 format:
   revealjs:
     slide-number: true
     mermaid:
       theme: default
+    css: custom.css
+    code-line-numbers: false
+code-annotations: hover
 ---
 
 ![](static/hook_data_scientist_job.png){width=500}
@@ -23,7 +26,7 @@ Review. But you know what isn't sexy?
 
 ::: {.notes}
 Dealing with invalid Data, which can often feel like a losing battle when you
-don't realize something that corrupted or otherwise incorrect data has passed
+don't realize that corrupted or otherwise incorrect data has passed
 through your pipeline. What's worse is that downstream consumers of that data
 are actually relying on you to make sure that the data is clean and correct.
 :::
@@ -46,74 +49,13 @@ are actually relying on you to make sure that the data is clean and correct.
 
 . . .
 
-*"But I just want to train my model!"*
+**"But I just want to train my model!"** 😫
 
 ::: {.notes}
-We all know that data quality is super important.
-
-...
-
-My job, in this talk, is not to convince you that data validation is the most attractive
-part of data science, but I do want to convince you that...
+Once upon a time, this was me...
 :::
 
-## Data validation can be fun 🎉
-
-. . .
-
-Data validation is like unit testing for your data
-
-. . .
-
-```
-$ run pipeline
-```
-
-- ✅ `dataset_x_validation`
-- ✅ `dataset_y_validation`
-- ✅ `dataset_z_validation`
-
-. . .
-
-### ✨🍪✨ {.larger}
-
-::: {.notes}
-And the way you do that is to reframe data validation as unit tests for your data.
-
-This way whenever you run your data pipelines you'll know that your datasets
-are valid and you can get that little dopamine hit seeing your data tests pass.
-:::
-
-## So what? 🤷‍♂️
-
-. . .
-
-Data validation is about **understanding** what counts as valid data and capturing
-that understanding as a **schema**.
-
-. . .
-
-By using `pandera` in your Python and R stacks, you get:
-
-::: {.incremental}
-- ⭐️ A single source of truth
-- 📖 Data documentation as code
-- 🔎 Run-time dataframe enforcers
-:::
-
-::: {.notes}
-Framing data validation as fun is really a trojan horse for getting you to do
-something that yields a lot of practical benefits, because...
-
-- A single source of truth for you data schemas
-- Data documentation as code for you and your team to understand what your data looks like
-- Run-time dataframe enforcers in development, testing, and production contexts
-
-So you can spend less time worrying about the correctness of your data and
-more time analyzing, visualizing, and modeling them.
-:::
-
-## A day in the life of a data scientist {.smaller}
+## A day in the life of a data scientist
 
 ```{mermaid}
 %%| fig-width: 10
@@ -127,13 +69,11 @@ flowchart LR
 ```
 
 ::: {.notes}
-Let me illustrate this with an all too familiar story.
-
 In one of my past jobs I had to train a model, so my pipeline looked something
 like this:
 :::
 
-## A day in the life of a data scientist {.smaller}
+## A day in the life of a data scientist
 
 ```{mermaid}
 %%| fig-width: 10
@@ -153,7 +93,7 @@ Now the training step can take a long time to complete, so I had to wait a few
 days for that to complete...
 :::
 
-## A day in the life of a data scientist {.smaller}
+## A day in the life of a data scientist
 
 ```{mermaid}
 %%| fig-width: 10
@@ -170,76 +110,103 @@ flowchart LR
 ```
 
 ::: {.notes}
-Only to find that a bug in the way I was creating the test data caused my
+Only to find a bug in the way I was creating the test data caused my
 evaluation step to fail.
+:::
 
+## A day in the life of a data scientist
+
+```{mermaid}
+%%| fig-width: 10
+%%| fig-height: 5
+
+flowchart LR
+  A[clean data] --> S[split data]
+  S --> B[train model]
+  B --> C[evaluate model]
+  S --> C
+
+  style S fill:#FFF2CC,stroke:#e2b128
+  style B fill:#8cffb4,stroke:#2bb55b
+  style C fill:#ff8c8c,stroke:#bc3131
+```
+
+::: {.notes}
 Had I made some assertions about what the test data should look like at the
 split data step, I would have caught this data bug early before wasting all of
 that time training the model.
 :::
 
-
-## A day in the life of a data scientist {.smaller}
-
-**Unit Tests**
-
-- ✅ `test_clean_data`
-- ✅ `test_split_data`
-- ✅ `test_train_model`
-- ✅ `test_evaluate_model`
+## Data validation is about understanding your data
 
 . . .
 
-**Data Tests**
+And capturing that understanding as a **schema**.
 
-- ✅ `validate_cleaned_data`
-- ✅ `validate_split_data`
-- ✅ `validate_training_data`
-- ✅ `validate_metrics_data`
+```{python}
+#| echo: true
+#| eval: false
+{
+    "column1": "integer",
+    "column2": "string",
+    "column3": "float",
+}
+```
 
-
-::: {.notes}
-So just like have unit tests for your functions, you can also define
-data tests for your data as it progresses through your data and modeling pipelines.
-
-This way you can get that little dopamine hit when your data validations pass
-with all of those green checkmarks.
-
-I can tell you from experience, it really makes you feel safe and confident
-knowing that your data is as you expect it to be...
+::: {.incremental}
+- 📖 Schemas document the shape and properties of some data structure.
+- 🔍 Schemas enforce that shape and those properties programmatically.
 :::
 
-## A day in the life of a data scientist {.smaller}
-
-**Unit Tests**
-
-- ✅ `test_clean_data`
-- ✅ `test_split_data`
-- ✅ `test_train_model`
-- ❌ `test_evaluate_model`
-
-**Data Tests**
-
-- ✅ `validate_cleaned_data`
-- ❌ `validate_split_data`
-- ✅ `validate_training_data`
-- ✅ `validate_metrics_data`
-
-
 ::: {.notes}
-... or that something went wrong and you know exactly where to start looking for
-the bug that caused the error.
+A schema is some artifact that serves two purposes:
 
-But these benefits doesn't come for free...
+...
+
+My job, in this talk, is not to convince you that data validation is the most
+attractive part of data science, but I do want to convince you that...
 :::
 
-## The data validation journey
+
+## Data validation can be fun 🎉
+
+. . .
+
+Data validation is like unit testing for your data
+
+. . .
+
+```
+$ run pipeline
+```
+
+- ✅ `dataset_x_validation`
+- ✅ `dataset_y_validation`
+- ✅ `dataset_z_validation`
+
+. . .
+
+### ✨🍪✨
 
 ::: {.notes}
-Like many things in life, the journey is as important as the destination.
+And the way you do that is to reframe data validation as unit tests for your data.
+
+This way whenever you run your data pipelines you'll know that your datasets
+are valid and you can get that little dopamine hit seeing your data tests pass.
 :::
 
-Implementing a data pipeline: before
+## The data validation mindset
+
+::: {.notes}
+Like many things in life worth doing, getting to the fun part of data validation
+requires some extra work and a in mindset.
+
+The shift is subtle, where instead of casually checking your data as you implement
+the functions for your pipeline, you explicitly define a schema along-side your
+function.
+:::
+
+Before:
 
 ```{mermaid}
 %%| fig-width: 10
@@ -261,9 +228,9 @@ flowchart LR
   P -- No --> E
 ```
 
-## The data validation journey
+## The data validation mindset
 
-Implementing a data pipeline: after
+After:
 
 ```{mermaid}
 %%| fig-width: 10
@@ -292,8 +259,8 @@ flowchart LR
 ```
 
 ::: {.notes}
-Data validation is a never-ending process of understanding your data, encoding
-your understanding as a schemas, testing it against live data, and re-understanding
+Data validation is a never-ending process of understanding your data through exploration,
+encoding your understanding as a schemas, testing it against live data, and re-understanding
 your data as it shifts around in the real world.
 :::
 
@@ -310,17 +277,85 @@ But once you gain that understanding at a particular point in time, it can seem
 like a sisyphian task to define and maintain the schemas that you need to make
 sure your data are valid.
 
-I built pandera to lower the barrier to creating and maintaining the practice
-data hygiene in your organization.
+I built pandera to lower the barrier to creating and maintaining schemas
+in your codebase and my hope was that it would encourage a culture of data hygiene
+in the organizations that use it.
 :::
 
-## How `pandera` works
+---
 
-`pandera` provides a flexible and light-weight toolkit for data validation.
+<br>
+<br>
 
-## Define Goal {.smaller}
+:::: {.columns}
 
-Predict the price of items a produce transaction dataset
+::: {.column}
+![](https://pandera.readthedocs.io/en/latest/_static/pandera-banner.png)
+:::
+
+::: {.column .smaller}
+`pandera`: a Python data validation and testing toolkit
+:::
+
+::::
+
+. . .
+
+:::: {.columns}
+
+::: {.column}
+![](https://rstudio.github.io/reticulate/reference/figures/reticulated_python.png){width=250}
+:::
+
+::: {.column .smaller}
+`reticulate`: a bridge between Python and R
+:::
+
+::::
+
+::: {.notes}
+Pandera is a python package that provides a light-weight, flexible, and expressive
+API for data validation of dataframe-like objects in Python...
+
+... and reticulate is an R package that provides a bridge between Python and R such
+that you can interchange data structures, objects, and functions between them.
+:::
+
+## 🤷‍♂️ So What?
+
+. . .
+
+By using `pandera` in your Python and R stacks, you get:
+
+::: {.incremental}
+- ⭐️ A single source of truth
+- 📖 Data documentation as code
+- 🔎 Run-time dataframe schema enforcers
+:::
+
+. . .
+
+⏱️ Spend less time worrying about the correctness of your data and more time
+analyzing, visualizing, and modeling them.
+
+::: {.notes}
+Framing data validation as fun is really a trojan horse for getting you to do
+something that yields a lot of practical benefits, because...
+
+- A single source of truth for you data schemas
+- Data documentation as code for you and your team to understand what your data looks like
+- Run-time dataframe enforcers in development, testing, and production contexts
+
+So you can spend less time worrying about the correctness of your data and
+more time analyzing, visualizing, and modeling them.
+
+Now I'd like to take you through a mini data validation journey to show you how
+you can get started with pandera in Python and R.
+:::
+
+## Define Goal
+
+Predict the price of items in a produce transaction dataset
 
 ```{python}
 #| echo: true
@@ -333,89 +368,125 @@ transactions = pd.DataFrame.from_records([
 ])
 ```
 
-## Explore the data {.smaller}
+## Explore the data
+
+:::: {.columns}
+
+::: {.column}
+```{python}
+#| echo: true
+transactions.dtypes
+```
+
+<br>
+
+```{python}
+#| echo: true
+transactions.describe()
+```
+:::
+
+::: {.column}
 
 ```{python}
 transactions.set_index("item").plot.barh();
 ```
 
-## Capture our understanding {.smaller}
+:::
+
+::::
+
+## Build our understanding
 
 ::: {.incremental}
 - `item` is a categorical variable represented as a string.
 - `item` contains three possible values: `orange`, `apple`, and `banana`.
-- `price` is an integer.
-- `price` is a positive value.
+- `price` is a float.
+- `price` is greater or equal to zero.
 - neither column can contain null values
 :::
 
-## Define a schema {.smaller}
+## Define a schema
+
+Pandera gives you a simple way to translate your understanding into a schema
 
 . . .
-
-Class-based API
 
 ```{python}
 #| echo: true
 import pandera as pa
 
 class Schema(pa.DataFrameModel):
-    item: str = pa.Field(
-        isin=["apple", "orange", "banana"],
-        nullable=False,
+    item: str = pa.Field(                    # <1>
+        isin=["apple", "orange", "banana"],  # <2>
+        nullable=False,                      # <5>
     )
-    price: float = pa.Field(
-        gt=0,
-        nullable=False,
+    price: float = pa.Field(                 # <3>
+        ge=0,                                # <4>
+        nullable=False,                      # <5>
     )
 ```
 
-. . .
+1. `item` is a categorical variable represented as a string.
+2. `item` contains three possible values: `orange`, `apple`, and `banana`.
+3. `price` is a float.
+4. `price` is a positive value.
+5. neither column can contain null values
 
-Object-based API
-
-```{python}
-#| echo: true
-schema = pa.DataFrameSchema({
-    "item": pa.Column(
-        str,
-        pa.Check.isin(["apple", "orange", "banana"]),
-        nullable=False,
-    ),
-    "price": pa.Column(
-        float,
-        pa.Check.gt(0),
-        nullable=False,
-    )
-})
-```
-
-## Validate the data {.smaller}
+## Validate the data
 
 If the data are valid, `Schema.validate` simply returns the valid data:
 
-. . .
-
 ```{python}
 #| echo: true
 
-Schema.validate(transactions)
+validated_transactions = Schema.validate(transactions)
 ```
 
-## Validate the data {.smaller}
+```{python}
+from IPython.display import Markdown
 
-But if not, it raises an exception:
+Markdown(validated_transactions.to_html())
+```
 
-. . .
+## Validate the data
+
+But if not, it raises a `SchemaError` exception:
 
 ```{python}
 #| echo: true
+#| code-line-numbers: "3,4"
 invalid_data = pd.DataFrame.from_records([
     {"item": "apple", "price": 0.75},
     {"item": "orange", "price": float("nan")},
     {"item": "squash", "price": -1000.0},
 ])
+```
 
+. . .
+
+```{python}
+#| echo: true
+#| code-line-numbers: "3"
+try:
+    Schema.validate(invalid_data)
+except pa.errors.SchemaError as exc:
+    failure_cases = exc.failure_cases
+```
+
+. . .
+
+```{python}
+Markdown(failure_cases.to_html())
+```
+
+## Validate the data
+
+`lazy=True` will evaluate all checks before raising a `SchemaErrors` exception.
+
+```{python}
+#| echo: true
+#| code-line-numbers: "3"
 try:
     Schema.validate(invalid_data, lazy=True)
 except pa.errors.SchemaErrors as exc:
@@ -425,13 +496,16 @@ except pa.errors.SchemaErrors as exc:
 . . .
 
 ```{python}
-failure_cases
+Markdown(failure_cases.to_html())
 ```
 
-## Functional Validation {.smaller}
+## Functional Validation
+
+Add type hints and a `pandera.check_types` decorator to your functions
 
 ```{python}
 #| echo: true
+#| code-line-numbers: "3,4"
 from pandera.typing import DataFrame
 
 @pa.check_types(lazy=True)
@@ -439,7 +513,9 @@ def clean_data(raw_data) -> DataFrame[Schema]:
     return raw_data
 ```
  
-. . .
+## Functional Validation
+
+The `clean_data` function now validates data every time it's called:
 
 ```{python}
 #| echo: true
@@ -449,57 +525,208 @@ except pa.errors.SchemaErrors as exc:
     failure_cases = exc.failure_cases
 ```
 
+```{python}
+Markdown(failure_cases.to_html())
+```
+
+## Updating the Schema
+
+"But squash *is* a valid item!"
+
+```{python}
+#| echo: true
+#| code-line-numbers: "3"
+class Schema(pa.DataFrameModel):
+    item: str = pa.Field(
+        isin=["apple", "orange", "banana", "squash"],
+        nullable=False,
+    )
+    price: float = pa.Field(
+        ge=0,
+        nullable=False,
+    )
+```
+
+## Schema Options
+
+```{python}
+#| echo: true
+class SchemaOptions(pa.DataFrameModel):
+    ...
+
+    class Config:
+        coerce = True   # <1>
+        ordered = True  # <2>
+        strict = True  # <3>
+        drop_invalid_rows = True  # <4>
+        unique_column_names = True  # <5>
+```
+
+1. Attempts to coerce raw data into specified types
+2. Makes sure columns are order as specified in schema
+3. Makes sure all columns specified in the schema are present
+4. Drops rows with invalid values
+5. Makes sure column names are unique
+
+## Built-in Checks
+
+```{python}
+#| echo: true
+class SchemaBuiltInChecks(pa.DataFrameModel):
+    column_1: str = pa.Field(
+        isin=["a", "b", "c"],  # <1>
+        unique_values_eq=["a", "b", "c"],  # <2>
+        str_matches="pattern",  # <3>
+    )
+    column_2: float = pa.Field(
+        in_range={"min_value": 0, "max_value": 100},  # <4>
+        le=100,  # <5>
+        ne=-1,  # <6>
+    )
+```
+
+1. Values are in a finite set
+2. Unique set of values are equal to a finite set
+3. String matches a pattern
+4. Values are within some range
+5. Values are less than some maximum
+6. Values are not equal to some constant
+
+
+## Custom Checks
+
+```{python}
+#| echo: true
+class SchemaCustomChecks(pa.DataFrameModel):
+    column_1: float
+    column_2: float
+
+    @pa.check("column_1", "column_2")
+    def mean_is_between(cls, series):  # <1>
+        return 0 <= series.mean() <= 100
+
+    @pa.dataframe_check
+    def col1_lt_col2(cls, df):  # <2>
+        return df["column_1"] < df["column_2"]
+```
+
+1. Custom column-level check makes sure the mean of that column is within some range
+2. Custom dataframe-level check makes sure `column_1` is less than `column_2`
+
+## Regex Column-matching
+
+Suppose I have column names that match some pattern:
+
+```{python}
+import numpy as np
+
+wide_df = pd.DataFrame({
+    "num_col_1": np.random.randn(3),
+    "num_col_2": np.random.randn(3),
+    "num_col_3": np.random.randn(3),
+    "num_col_n": np.random.randn(3),
+})
+Markdown(wide_df.to_html())
+```
+
 . . .
 
 ```{python}
-failure_cases
+#| echo: true
+#| code-line-numbers: "2,4"
+class RegexSchema(pa.DataFrameModel):
+    num_columns: float = pa.Field(alias="num_col_.+", regex=True)
+
+    @pa.check("num_col_.+", regex=True)
+    def custom_check(cls, series):
+        ...
+```
+
+## Meta Comment
+
+This presentation quarto document is validated by pandera 🤯
+
+![](https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy-downsized-large.gif)
+
+
+## Using `pandera` in R via `reticulate`
+. . .
+
+🐘 What about `pointblank` or `validate`?
+
+::: {.incremental}
+- If you're already using `pandera`, reuse those schemas in an R runtime ♻️.
+- If the `pandera` programming model somehow fits better in your head 🧠.
+- You just want R and Python to get along 🤝
+:::
+
+. . .
+
+```{r}
+#| echo: true
+library(dplyr)
+library(knitr)
+library(reticulate)
+
+use_condaenv("pandera-posit-2023")
 ```
 
 ::: {.notes}
 Now this is all well and good if you're using Python, but what about if you're
 using R?
-:::
 
-## Using `pandera` in R via `reticulate` {.smaller}
+...
 
-::: {.notes}
 I went down this path with some trepidation that pandera will break in R, but...
 :::
 
+## It just works! 🔥
+
 ```{r}
 #| echo: true
-library(reticulate)
-library(dplyr)
+valid_r_data <- data.frame(
+    item = c("apple", "orange", "orange"),
+    price = c(0.5, 0.75, 0.25)
+)
 
-use_condaenv("pandera-posit-2023")
+validated_r_data <- py$Schema$validate(valid_r_data)
 ```
 
-## It just works! 🔥 {.smaller}
+. . .
+
+```{r}
+kable(validated_r_data)
+```
+
+. . .
+
+⚠️ **Warning:** this hasn't been comprehensively tested
+
+## Catch the Python Exception
 
 ```{r}
 #| echo: true
-r_data <- data.frame(
+#| code-line-numbers: "2,3"
+invalid_r_data <- data.frame(
     item = c("applee", "orange", "orange"),
     price = c(0.5, 0.75, NaN)
 )
 ```
 
-```{r}
-#| echo: true
-py$Schema$validate(py$transactions)
-```
-
-## Catch the Python Exception {.smaller}
+. . .
 
 ```{r}
 #| echo: true
 validated_data <- tryCatch({
-    py$Schema$validate(r_data, lazy=TRUE)
+    return(py$Schema$validate(invalid_r_data, lazy=TRUE))  # <1>
 }, error=function(err) {
-    exception <<- attr(py_last_error(), "exception")
+    exception <<- attr(py_last_error(), "exception")  # <2>
     return(NULL)
 })
 ```
+
+1. Use `py` to access variables in the Python namespace
+2. Use the `py_last_error` function to get the last exception raised in Python
 
 . . .
 
@@ -507,24 +734,136 @@ Get the failure cases
 
 ```{r}
 #| echo: true
-# get failed rows don't forget the 0- to 1-based index conversion!
 failure_cases <- exception$failure_cases
-failed_rows <- as.character(failure_cases$index + 1)
-print(failure_cases)
+kable(failure_cases)
 ```
 
-## Filter out Invalid Rows {.smaller}
+## Synthesize Test Data with Pandera
+
+Just call `Schema$example`
 
 ```{r}
 #| echo: true
-# filter the data to only include valid rows
-filtered_data <- r_data |> filter(!(rownames(r_data) %in% failed_rows))
-print(filtered_data)
+example_data <- py$Schema$example(size = as.integer(5))
 ```
 
-## Get `pandera` set up on your stack in 5 minutes {.smaller}
+. . .
 
-Install pandera
+```{r}
+kable(example_data)
+```
+
+## Unit testing
+
+Suppose I want to add a `returned` column to my dataset...
+
+. . .
+
+```{python}
+#| echo: true
+# Before data processing
+class Schema(pa.DataFrameModel):
+    item: str = pa.Field(isin=["apple", "orange", "banana"], nullable=False)
+    price: float = pa.Field(ge=0, nullable=False)
+```
+
+. . .
+
+<br>
+
+```{python}
+#| echo: true
+# After data processing
+class ProcessedSchema(Schema):
+    returned: bool
+```
+
+
+## Unit testing
+
+Defining a `process_data` function
+
+```{r}
+#| echo: true
+process_data <- function(data, returned) {
+    transformed <- py$Schema$validate(data, lazy=TRUE) |>
+        mutate(returned=returned)
+
+    return(py$ProcessedSchema$validate(transformed, lazy=TRUE))
+}
+```
+
+## Unit testing
+
+Our test for `process_data`:
+
+```{r}
+#| echo: true
+test_process_data <- function() {
+    mock_data <- py$Schema$example(size = as.integer(3))  # <1>
+    failed <- FALSE
+
+    output <- tryCatch({  # <2>
+        process_data(mock_data, FALSE)
+    }, error=function(err) {
+        exception <<- attr(py_last_error(), "exception")
+        failed <<- TRUE
+        return(NULL)
+    })  # <2>
+
+    if (failed) {  # <3>
+        print("process_data test failed ❌")
+        kable(exception$failure_cases)
+    } else {
+        print("process_data test passes ✅")
+        kable(output)
+    }   # <3>
+}
+```
+
+1. Create a mock dataset
+2. Try/catch an error when calling `process_data`
+3. Report success or failure
+
+## Unit testing
+
+Run `test_process_data`
+
+```{r}
+#| echo: true
+test_process_data()
+```
+
+
+## Catch bugs early 🐞
+
+Suppose there's a bug in `process_data`:
+
+```{r}
+#| echo: true
+#| code-line-numbers: "3"
+process_data <- function(data, returned) {
+    transformed <- py$Schema$validate(data, lazy=TRUE) |>
+        mutate(returnd=returned)
+
+    return(py$ProcessedSchema$validate(transformed, lazy=TRUE))
+}
+```
+
+## Catch bugs early 🐞
+
+```{r}
+#| echo: true
+
+test_process_data()
+```
+
+---
+
+Data validation is not only about testing the actual data, but also the
+functions that produce them.
+
+## Get started with `pandera` in 10 minutes {.smaller}
 
 :::: {.columns}
 
@@ -596,14 +935,6 @@ py$Schema$validate(py$python_data)
 
 ::::
 
----
-
-<br>
-<br>
-<br>
-
-![](static/data_please_validate_me.jpeg){height=300 fig-align="center"}
-
 ::: {.notes}
 By understanding what counts as valid data, creating schemas for them, and using
 these schemas across your Python and R stack, you get a single source of truth
@@ -613,10 +944,24 @@ contexts. `pandera` lowers the barrier to maintaining data hygiene so you can sp
 less time worrying about the correctness of your data and more time analyzing, visualizing,
 and modeling them.
 
-Pandera posit talk notes:
-- “I built pandera”: introduce it
-- clarify what pandera (python) and reticulate (R)
-- consider de-emphasize reticulate
-- only show class-based API
-- maybe explain “schema” a bit the first time you mention it?
+And at the end of the day, I really think that actually, our data wants to be
+validated, so I think it's up to us to do that for them.
 :::
+
+---
+
+<br>
+<br>
+<br>
+
+![](static/data_please_validate_me.jpeg){height=300 fig-align="center"}
+
+## 💡 Got ideas?
+
+Come talk to me!
+
+- email: niels@union.ai
+- twitter: @cosmicbboy
+- linkedin: [https://www.linkedin.com/in/nbantilan](https://www.linkedin.com/in/nbantilan)
+- discord: [https://discord.gg/NmKXbZHhDN](https://discord.gg/NmKXbZHhDN)
+- repo: [https://github.com/unionai-oss/pandera](https://github.com/unionai-oss/pandera)

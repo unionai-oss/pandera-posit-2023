@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.3.296">
 
   <meta name="author" content="Niels Bantilan">
-  <meta name="dcterms.date" content="2023-09-30">
+  <meta name="dcterms.date" content="2023-09-20">
   <title>Validating and Testing R DataFrames with pandera and reticulate</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -97,6 +97,7 @@
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="simple_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link rel="stylesheet" href="custom.css">
   <link href="simple_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="simple_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="simple_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -405,7 +406,7 @@ Niels Bantilan
 </div>
 </div>
 
-  <p class="date">2023-09-30</p>
+  <p class="date">2023-09-20</p>
 </section>
 <section class="slide level2">
 
@@ -428,7 +429,7 @@ Niels Bantilan
 <h2>Dealing with invalid data 😭</h2>
 
 <img data-src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExajh4dTl3d2Z0YTRtaTlkeHgxd2trcDJsb2d2YmZzbW1kOTczMndzdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/XCxcmEQWxDdc8qsd2R/giphy.gif" width="500" class="r-stretch"><aside class="notes">
-<p>Dealing with invalid Data, which can often feel like a losing battle when you don’t realize something that corrupted or otherwise incorrect data has passed through your pipeline. What’s worse is that downstream consumers of that data are actually relying on you to make sure that the data is clean and correct.</p>
+<p>Dealing with invalid Data, which can often feel like a losing battle when you don’t realize that corrupted or otherwise incorrect data has passed through your pipeline. What’s worse is that downstream consumers of that data are actually relying on you to make sure that the data is clean and correct.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -460,11 +461,9 @@ Niels Bantilan
 </blockquote>
 </div>
 <div class="fragment">
-<p><em>“But I just want to train my model!”</em></p>
+<p><strong>“But I just want to train my model!”</strong> 😫</p>
 <aside class="notes">
-<p>We all know that data quality is super important.</p>
-<p>…</p>
-<p>My job, in this talk, is not to convince you that data validation is the most attractive part of data science, but I do want to convince you that…</p>
+<p>Once upon a time, this was me…</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -478,73 +477,7 @@ Niels Bantilan
       }</style></aside>
 </div>
 </section>
-<section id="data-validation-can-be-fun" class="slide level2">
-<h2>Data validation can be fun 🎉</h2>
-<div class="fragment">
-<p>Data validation is like unit testing for your data</p>
-</div>
-<div class="fragment">
-<pre><code>$ run pipeline</code></pre>
-<ul>
-<li>✅ <code>dataset_x_validation</code></li>
-<li>✅ <code>dataset_y_validation</code></li>
-<li>✅ <code>dataset_z_validation</code></li>
-</ul>
-</div>
-<div class="fragment">
-<h3 class="larger" id="section">✨🍪✨</h3>
-<aside class="notes">
-<p>And the way you do that is to reframe data validation as unit tests for your data.</p>
-<p>This way whenever you run your data pipelines you’ll know that your datasets are valid and you can get that little dopamine hit seeing your data tests pass.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="so-what" class="slide level2">
-<h2>So what? 🤷‍♂️</h2>
-<div class="fragment">
-<p>Data validation is about <strong>understanding</strong> what counts as valid data and capturing that understanding as a <strong>schema</strong>.</p>
-</div>
-<div class="fragment">
-<p>By using <code>pandera</code> in your Python and R stacks, you get:</p>
-<div>
-<ul>
-<li class="fragment">⭐️ A single source of truth</li>
-<li class="fragment">📖 Data documentation as code</li>
-<li class="fragment">🔎 Run-time dataframe enforcers</li>
-</ul>
-</div>
-<aside class="notes">
-<p>Framing data validation as fun is really a trojan horse for getting you to do something that yields a lot of practical benefits, because…</p>
-<ul>
-<li>A single source of truth for you data schemas</li>
-<li>Data documentation as code for you and your team to understand what your data looks like</li>
-<li>Run-time dataframe enforcers in development, testing, and production contexts</li>
-</ul>
-<p>So you can spend less time worrying about the correctness of your data and more time analyzing, visualizing, and modeling them.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="a-day-in-the-life-of-a-data-scientist" class="slide level2 smaller">
+<section id="a-day-in-the-life-of-a-data-scientist" class="slide level2">
 <h2>A day in the life of a data scientist</h2>
 <div class="cell" data-reveal="true" data-fig-width="10" data-fig-height="5">
 <div class="cell-output-display">
@@ -561,7 +494,6 @@ Niels Bantilan
 </div>
 </div>
 <aside class="notes">
-<p>Let me illustrate this with an all too familiar story.</p>
 <p>In one of my past jobs I had to train a model, so my pipeline looked something like this:</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -575,7 +507,7 @@ Niels Bantilan
           display:block!important;
       }</style></aside>
 </section>
-<section id="a-day-in-the-life-of-a-data-scientist-1" class="slide level2 smaller">
+<section id="a-day-in-the-life-of-a-data-scientist-1" class="slide level2">
 <h2>A day in the life of a data scientist</h2>
 <div class="cell" data-reveal="true" data-fig-width="10" data-fig-height="5">
 <div class="cell-output-display">
@@ -607,7 +539,7 @@ Niels Bantilan
           display:block!important;
       }</style></aside>
 </section>
-<section id="a-day-in-the-life-of-a-data-scientist-2" class="slide level2 smaller">
+<section id="a-day-in-the-life-of-a-data-scientist-2" class="slide level2">
 <h2>A day in the life of a data scientist</h2>
 <div class="cell" data-reveal="true" data-fig-width="10" data-fig-height="5">
 <div class="cell-output-display">
@@ -627,7 +559,40 @@ Niels Bantilan
 </div>
 </div>
 <aside class="notes">
-<p>Only to find that a bug in the way I was creating the test data caused my evaluation step to fail.</p>
+<p>Only to find a bug in the way I was creating the test data caused my evaluation step to fail.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-day-in-the-life-of-a-data-scientist-3" class="slide level2">
+<h2>A day in the life of a data scientist</h2>
+<div class="cell" data-reveal="true" data-fig-width="10" data-fig-height="5">
+<div class="cell-output-display">
+<div>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+  A[clean data] --&gt; S[split data]
+  S --&gt; B[train model]
+  B --&gt; C[evaluate model]
+  S --&gt; C
+
+  style S fill:#FFF2CC,stroke:#e2b128
+  style B fill:#8cffb4,stroke:#2bb55b
+  style C fill:#ff8c8c,stroke:#bc3131
+</pre>
+</div>
+</div>
+</div>
+</div>
+<aside class="notes">
 <p>Had I made some assertions about what the test data should look like at the split data step, I would have caught this data bug early before wasting all of that time training the model.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -641,27 +606,27 @@ Niels Bantilan
           display:block!important;
       }</style></aside>
 </section>
-<section id="a-day-in-the-life-of-a-data-scientist-3" class="slide level2 smaller">
-<h2>A day in the life of a data scientist</h2>
-<p><strong>Unit Tests</strong></p>
-<ul>
-<li>✅ <code>test_clean_data</code></li>
-<li>✅ <code>test_split_data</code></li>
-<li>✅ <code>test_train_model</code></li>
-<li>✅ <code>test_evaluate_model</code></li>
-</ul>
+<section id="data-validation-is-about-understanding-your-data" class="slide level2">
+<h2>Data validation is about understanding your data</h2>
 <div class="fragment">
-<p><strong>Data Tests</strong></p>
+<p>And capturing that understanding as a <strong>schema</strong>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"column1"</span>: <span class="st">"integer"</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"column2"</span>: <span class="st">"string"</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"column3"</span>: <span class="st">"float"</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div>
 <ul>
-<li>✅ <code>validate_cleaned_data</code></li>
-<li>✅ <code>validate_split_data</code></li>
-<li>✅ <code>validate_training_data</code></li>
-<li>✅ <code>validate_metrics_data</code></li>
+<li class="fragment">📖 Schemas document the shape and properties of some data structure.</li>
+<li class="fragment">🔍 Schemas enforce that shape and those properties programmatically.</li>
 </ul>
+</div>
 <aside class="notes">
-<p>So just like have unit tests for your functions, you can also define data tests for your data as it progresses through your data and modeling pipelines.</p>
-<p>This way you can get that little dopamine hit when your data validations pass with all of those green checkmarks.</p>
-<p>I can tell you from experience, it really makes you feel safe and confident knowing that your data is as you expect it to be…</p>
+<p>A schema is some artifact that serves two purposes:</p>
+<p>…</p>
+<p>My job, in this talk, is not to convince you that data validation is the most attractive part of data science, but I do want to convince you that…</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -675,25 +640,24 @@ Niels Bantilan
       }</style></aside>
 </div>
 </section>
-<section id="a-day-in-the-life-of-a-data-scientist-4" class="slide level2 smaller">
-<h2>A day in the life of a data scientist</h2>
-<p><strong>Unit Tests</strong></p>
+<section id="data-validation-can-be-fun" class="slide level2">
+<h2>Data validation can be fun 🎉</h2>
+<div class="fragment">
+<p>Data validation is like unit testing for your data</p>
+</div>
+<div class="fragment">
+<pre><code>$ run pipeline</code></pre>
 <ul>
-<li>✅ <code>test_clean_data</code></li>
-<li>✅ <code>test_split_data</code></li>
-<li>✅ <code>test_train_model</code></li>
-<li>❌ <code>test_evaluate_model</code></li>
+<li>✅ <code>dataset_x_validation</code></li>
+<li>✅ <code>dataset_y_validation</code></li>
+<li>✅ <code>dataset_z_validation</code></li>
 </ul>
-<p><strong>Data Tests</strong></p>
-<ul>
-<li>✅ <code>validate_cleaned_data</code></li>
-<li>❌ <code>validate_split_data</code></li>
-<li>✅ <code>validate_training_data</code></li>
-<li>✅ <code>validate_metrics_data</code></li>
-</ul>
+</div>
+<div class="fragment">
+<h3 id="section">✨🍪✨</h3>
 <aside class="notes">
-<p>… or that something went wrong and you know exactly where to start looking for the bug that caused the error.</p>
-<p>But these benefits doesn’t come for free…</p>
+<p>And the way you do that is to reframe data validation as unit tests for your data.</p>
+<p>This way whenever you run your data pipelines you’ll know that your datasets are valid and you can get that little dopamine hit seeing your data tests pass.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -705,11 +669,13 @@ Niels Bantilan
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</div>
 </section>
-<section id="the-data-validation-journey" class="slide level2">
-<h2>The data validation journey</h2>
+<section id="the-data-validation-mindset" class="slide level2">
+<h2>The data validation mindset</h2>
 <aside class="notes">
-<p>Like many things in life, the journey is as important as the destination.</p>
+<p>Like many things in life worth doing, getting to the fun part of data validation requires some extra work and a in mindset.</p>
+<p>The shift is subtle, where instead of casually checking your data as you implement the functions for your pipeline, you explicitly define a schema along-side your function.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -721,7 +687,7 @@ Niels Bantilan
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<p>Implementing a data pipeline: before</p>
+<p>Before:</p>
 <div class="cell" data-reveal="true" data-fig-width="10" data-fig-height="5">
 <div class="cell-output-display">
 <div>
@@ -746,9 +712,9 @@ Niels Bantilan
 </div>
 </div>
 </section>
-<section id="the-data-validation-journey-1" class="slide level2">
-<h2>The data validation journey</h2>
-<p>Implementing a data pipeline: after</p>
+<section id="the-data-validation-mindset-1" class="slide level2">
+<h2>The data validation mindset</h2>
+<p>After:</p>
 <div class="cell" data-reveal="true" data-fig-width="10" data-fig-height="5">
 <div class="cell-output-display">
 <div>
@@ -779,7 +745,7 @@ Niels Bantilan
 </div>
 </div>
 <aside class="notes">
-<p>Data validation is a never-ending process of understanding your data, encoding your understanding as a schemas, testing it against live data, and re-understanding your data as it shifts around in the real world.</p>
+<p>Data validation is a never-ending process of understanding your data through exploration, encoding your understanding as a schemas, testing it against live data, and re-understanding your data as it shifts around in the real world.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -799,7 +765,7 @@ Niels Bantilan
 <p><img data-src="static/sisyphus.png" height="500"></p>
 <aside class="notes">
 <p>But once you gain that understanding at a particular point in time, it can seem like a sisyphian task to define and maintain the schemas that you need to make sure your data are valid.</p>
-<p>I built pandera to lower the barrier to creating and maintaining the practice data hygiene in your organization.</p>
+<p>I built pandera to lower the barrier to creating and maintaining schemas in your codebase and my hope was that it would encourage a culture of data hygiene in the organizations that use it.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -813,166 +779,588 @@ Niels Bantilan
       }</style></aside>
 </div>
 </section>
-<section id="how-pandera-works" class="slide level2">
-<h2>How <code>pandera</code> works</h2>
-<p><code>pandera</code> provides a flexible and light-weight toolkit for data validation.</p>
-</section>
-<section id="define-goal" class="slide level2 smaller">
-<h2>Define Goal</h2>
-<p>Predict the price of items a produce transaction dataset</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb2-2"><a href="#cb2-2"></a></span>
-<span id="cb2-3"><a href="#cb2-3"></a>transactions <span class="op">=</span> pd.DataFrame.from_records([</span>
-<span id="cb2-4"><a href="#cb2-4"></a>    {<span class="st">"item"</span>: <span class="st">"orange"</span>, <span class="st">"price"</span>: <span class="fl">0.75</span>},</span>
-<span id="cb2-5"><a href="#cb2-5"></a>    {<span class="st">"item"</span>: <span class="st">"apple"</span>, <span class="st">"price"</span>: <span class="fl">0.50</span>},</span>
-<span id="cb2-6"><a href="#cb2-6"></a>    {<span class="st">"item"</span>: <span class="st">"banana"</span>, <span class="st">"price"</span>: <span class="fl">0.25</span>},</span>
-<span id="cb2-7"><a href="#cb2-7"></a>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section class="slide level2">
+
+<p><br> <br></p>
+<div class="columns">
+<div class="column">
+<p><img data-src="https://pandera.readthedocs.io/en/latest/_static/pandera-banner.png"></p>
+</div><div class="column smaller">
+<p><code>pandera</code>: a Python data validation and testing toolkit</p>
+</div>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column">
+<p><img data-src="https://rstudio.github.io/reticulate/reference/figures/reticulated_python.png" width="250"></p>
+</div><div class="column smaller">
+<p><code>reticulate</code>: a bridge between Python and R</p>
+</div>
+</div>
+<aside class="notes">
+<p>Pandera is a python package that provides a light-weight, flexible, and expressive API for data validation of dataframe-like objects in Python…</p>
+<p>… and reticulate is an R package that provides a bridge between Python and R such that you can interchange data structures, objects, and functions between them.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
 </section>
-<section id="explore-the-data" class="slide level2 smaller">
+<section id="so-what" class="slide level2">
+<h2>🤷‍♂️ So What?</h2>
+<div class="fragment">
+<p>By using <code>pandera</code> in your Python and R stacks, you get:</p>
+<div>
+<ul>
+<li class="fragment">⭐️ A single source of truth</li>
+<li class="fragment">📖 Data documentation as code</li>
+<li class="fragment">🔎 Run-time dataframe schema enforcers</li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<p>⏱️ Spend less time worrying about the correctness of your data and more time analyzing, visualizing, and modeling them.</p>
+<aside class="notes">
+<p>Framing data validation as fun is really a trojan horse for getting you to do something that yields a lot of practical benefits, because…</p>
+<ul>
+<li>A single source of truth for you data schemas</li>
+<li>Data documentation as code for you and your team to understand what your data looks like</li>
+<li>Run-time dataframe enforcers in development, testing, and production contexts</li>
+</ul>
+<p>So you can spend less time worrying about the correctness of your data and more time analyzing, visualizing, and modeling them.</p>
+<p>Now I’d like to take you through a mini data validation journey to show you how you can get started with pandera in Python and R.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="define-goal" class="slide level2">
+<h2>Define Goal</h2>
+<p>Predict the price of items in a produce transaction dataset</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>transactions <span class="op">=</span> pd.DataFrame.from_records([</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"item"</span>: <span class="st">"orange"</span>, <span class="st">"price"</span>: <span class="fl">0.75</span>},</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"item"</span>: <span class="st">"apple"</span>, <span class="st">"price"</span>: <span class="fl">0.50</span>},</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"item"</span>: <span class="st">"banana"</span>, <span class="st">"price"</span>: <span class="fl">0.25</span>},</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="explore-the-data" class="slide level2">
 <h2>Explore the data</h2>
-
-<img data-src="simple_files/figure-revealjs/unnamed-chunk-7-1.png" width="614" class="r-stretch"></section>
-<section id="capture-our-understanding" class="slide level2 smaller">
-<h2>Capture our understanding</h2>
+<div class="columns">
+<div class="column">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>transactions.dtypes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>item      object
+price    float64
+dtype: object</code></pre>
+</div>
+</div>
+<p><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>transactions.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       price
+count  3.000
+mean   0.500
+std    0.250
+min    0.250
+25%    0.375
+50%    0.500
+75%    0.625
+max    0.750</code></pre>
+</div>
+</div>
+</div><div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="simple_files/figure-revealjs/unnamed-chunk-11-1.png" width="614"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="build-our-understanding" class="slide level2">
+<h2>Build our understanding</h2>
 <div>
 <ul>
 <li class="fragment"><code>item</code> is a categorical variable represented as a string.</li>
 <li class="fragment"><code>item</code> contains three possible values: <code>orange</code>, <code>apple</code>, and <code>banana</code>.</li>
-<li class="fragment"><code>price</code> is an integer.</li>
-<li class="fragment"><code>price</code> is a positive value.</li>
+<li class="fragment"><code>price</code> is a float.</li>
+<li class="fragment"><code>price</code> is greater or equal to zero.</li>
 <li class="fragment">neither column can contain null values</li>
 </ul>
 </div>
 </section>
-<section id="define-a-schema" class="slide level2 smaller">
+<section id="define-a-schema" class="slide level2">
 <h2>Define a schema</h2>
+<p>Pandera gives you a simple way to translate your understanding into a schema</p>
 <div class="fragment">
-<p>Class-based API</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="im">import</span> pandera <span class="im">as</span> pa</span>
-<span id="cb3-2"><a href="#cb3-2"></a></span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="kw">class</span> Schema(pa.DataFrameModel):</span>
-<span id="cb3-4"><a href="#cb3-4"></a>    item: <span class="bu">str</span> <span class="op">=</span> pa.Field(</span>
-<span id="cb3-5"><a href="#cb3-5"></a>        isin<span class="op">=</span>[<span class="st">"apple"</span>, <span class="st">"orange"</span>, <span class="st">"banana"</span>],</span>
-<span id="cb3-6"><a href="#cb3-6"></a>        nullable<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb3-7"><a href="#cb3-7"></a>    )</span>
-<span id="cb3-8"><a href="#cb3-8"></a>    price: <span class="bu">float</span> <span class="op">=</span> pa.Field(</span>
-<span id="cb3-9"><a href="#cb3-9"></a>        gt<span class="op">=</span><span class="dv">0</span>,</span>
-<span id="cb3-10"><a href="#cb3-10"></a>        nullable<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb3-11"><a href="#cb3-11"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandera <span class="im">as</span> pa</span>
+<span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Schema(pa.DataFrameModel):</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1">1</button><span id="annotated-cell-4-4" class="code-annotation-target"><a href="#annotated-cell-4-4" aria-hidden="true" tabindex="-1"></a>    item: <span class="bu">str</span> <span class="op">=</span> pa.Field(</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2">2</button><span id="annotated-cell-4-5" class="code-annotation-target"><a href="#annotated-cell-4-5" aria-hidden="true" tabindex="-1"></a>        isin<span class="op">=</span>[<span class="st">"apple"</span>, <span class="st">"orange"</span>, <span class="st">"banana"</span>],</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="5">5</button><span id="annotated-cell-4-6" class="code-annotation-target"><a href="#annotated-cell-4-6" aria-hidden="true" tabindex="-1"></a>        nullable<span class="op">=</span><span class="va">False</span>,</span>
+<span id="annotated-cell-4-7"><a href="#annotated-cell-4-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="3">3</button><span id="annotated-cell-4-8" class="code-annotation-target"><a href="#annotated-cell-4-8" aria-hidden="true" tabindex="-1"></a>    price: <span class="bu">float</span> <span class="op">=</span> pa.Field(</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="4">4</button><span id="annotated-cell-4-9" class="code-annotation-target"><a href="#annotated-cell-4-9" aria-hidden="true" tabindex="-1"></a>        ge<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="annotated-cell-4-10"><a href="#annotated-cell-4-10" aria-hidden="true" tabindex="-1"></a>        nullable<span class="op">=</span><span class="va">False</span>,</span>
+<span id="annotated-cell-4-11"><a href="#annotated-cell-4-11" aria-hidden="true" tabindex="-1"></a>    )</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-annotation="1" data-code-lines="4"><code>item</code> is a categorical variable represented as a string.</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-annotation="2" data-code-lines="5"><code>item</code> contains three possible values: <code>orange</code>, <code>apple</code>, and <code>banana</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-annotation="3" data-code-lines="8"><code>price</code> is a float.</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-annotation="4" data-code-lines="9"><code>price</code> is a positive value.</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-annotation="5" data-code-lines="6,10">neither column can contain null values</span>
+</dd>
+</dl>
 </div>
-</div>
-<div class="fragment">
-<p>Object-based API</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>schema <span class="op">=</span> pa.DataFrameSchema({</span>
-<span id="cb4-2"><a href="#cb4-2"></a>    <span class="st">"item"</span>: pa.Column(</span>
-<span id="cb4-3"><a href="#cb4-3"></a>        <span class="bu">str</span>,</span>
-<span id="cb4-4"><a href="#cb4-4"></a>        pa.Check.isin([<span class="st">"apple"</span>, <span class="st">"orange"</span>, <span class="st">"banana"</span>]),</span>
-<span id="cb4-5"><a href="#cb4-5"></a>        nullable<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb4-6"><a href="#cb4-6"></a>    ),</span>
-<span id="cb4-7"><a href="#cb4-7"></a>    <span class="st">"price"</span>: pa.Column(</span>
-<span id="cb4-8"><a href="#cb4-8"></a>        <span class="bu">float</span>,</span>
-<span id="cb4-9"><a href="#cb4-9"></a>        pa.Check.gt(<span class="dv">0</span>),</span>
-<span id="cb4-10"><a href="#cb4-10"></a>        nullable<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb4-11"><a href="#cb4-11"></a>    )</span>
-<span id="cb4-12"><a href="#cb4-12"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
-<section id="validate-the-data" class="slide level2 smaller">
+<section id="validate-the-data" class="slide level2">
 <h2>Validate the data</h2>
 <p>If the data are valid, <code>Schema.validate</code> simply returns the valid data:</p>
-<div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>Schema.validate(transactions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>     item  price
-0  orange   0.75
-1   apple   0.50
-2  banana   0.25</code></pre>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>validated_transactions <span class="op">=</span> Schema.validate(transactions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">item</th>
+<th data-quarto-table-cell-role="th">price</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>orange</td>
+<td>0.75</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>apple</td>
+<td>0.50</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>banana</td>
+<td>0.25</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </section>
-<section id="validate-the-data-1" class="slide level2 smaller">
+<section id="validate-the-data-1" class="slide level2">
 <h2>Validate the data</h2>
-<p>But if not, it raises an exception:</p>
-<div class="fragment">
+<p>But if not, it raises a <code>SchemaError</code> exception:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>invalid_data <span class="op">=</span> pd.DataFrame.from_records([</span>
-<span id="cb7-2"><a href="#cb7-2"></a>    {<span class="st">"item"</span>: <span class="st">"apple"</span>, <span class="st">"price"</span>: <span class="fl">0.75</span>},</span>
-<span id="cb7-3"><a href="#cb7-3"></a>    {<span class="st">"item"</span>: <span class="st">"orange"</span>, <span class="st">"price"</span>: <span class="bu">float</span>(<span class="st">"nan"</span>)},</span>
-<span id="cb7-4"><a href="#cb7-4"></a>    {<span class="st">"item"</span>: <span class="st">"squash"</span>, <span class="st">"price"</span>: <span class="op">-</span><span class="fl">1000.0</span>},</span>
-<span id="cb7-5"><a href="#cb7-5"></a>])</span>
-<span id="cb7-6"><a href="#cb7-6"></a></span>
-<span id="cb7-7"><a href="#cb7-7"></a><span class="cf">try</span>:</span>
-<span id="cb7-8"><a href="#cb7-8"></a>    Schema.validate(invalid_data, lazy<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb7-9"><a href="#cb7-9"></a><span class="cf">except</span> pa.errors.SchemaErrors <span class="im">as</span> exc:</span>
-<span id="cb7-10"><a href="#cb7-10"></a>    failure_cases <span class="op">=</span> exc.failure_cases</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<div class="sourceCode cell-code" id="cb9" data-code-line-numbers="3,4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>invalid_data <span class="op">=</span> pd.DataFrame.from_records([</span>
+<span id="cb9-2"><a href="#cb9-2"></a>    {<span class="st">"item"</span>: <span class="st">"apple"</span>, <span class="st">"price"</span>: <span class="fl">0.75</span>},</span>
+<span id="cb9-3"><a href="#cb9-3"></a>    {<span class="st">"item"</span>: <span class="st">"orange"</span>, <span class="st">"price"</span>: <span class="bu">float</span>(<span class="st">"nan"</span>)},</span>
+<span id="cb9-4"><a href="#cb9-4"></a>    {<span class="st">"item"</span>: <span class="st">"squash"</span>, <span class="st">"price"</span>: <span class="op">-</span><span class="fl">1000.0</span>},</span>
+<span id="cb9-5"><a href="#cb9-5"></a>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>  schema_context column  ... failure_case index
-0         Column   item  ...       squash     2
-1         Column  price  ...          NaN     1
-2         Column  price  ...      -1000.0     2
-
-[3 rows x 6 columns]</code></pre>
-</div>
-</div>
-</div>
-</section>
-<section id="functional-validation" class="slide level2 smaller">
-<h2>Functional Validation</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a><span class="im">from</span> pandera.typing <span class="im">import</span> DataFrame</span>
-<span id="cb9-2"><a href="#cb9-2"></a></span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="at">@pa.check_types</span>(lazy<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb9-4"><a href="#cb9-4"></a><span class="kw">def</span> clean_data(raw_data) <span class="op">-&gt;</span> DataFrame[Schema]:</span>
-<span id="cb9-5"><a href="#cb9-5"></a>    <span class="cf">return</span> raw_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="cf">try</span>:</span>
-<span id="cb10-2"><a href="#cb10-2"></a>    clean_data(invalid_data)</span>
-<span id="cb10-3"><a href="#cb10-3"></a><span class="cf">except</span> pa.errors.SchemaErrors <span class="im">as</span> exc:</span>
+<div class="sourceCode cell-code" id="cb10" data-code-line-numbers="3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="cf">try</span>:</span>
+<span id="cb10-2"><a href="#cb10-2"></a>    Schema.validate(invalid_data)</span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="cf">except</span> pa.errors.SchemaError <span class="im">as</span> exc:</span>
 <span id="cb10-4"><a href="#cb10-4"></a>    failure_cases <span class="op">=</span> exc.failure_cases</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>  schema_context column  ... failure_case index
-0         Column   item  ...       squash     2
-1         Column  price  ...          NaN     1
-2         Column  price  ...      -1000.0     2
-
-[3 rows x 6 columns]</code></pre>
+<div class="cell-output-display">
+<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">index</th>
+<th data-quarto-table-cell-role="th">failure_case</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>2</td>
+<td>squash</td>
+</tr>
+</tbody>
+</table>
 </div>
+</div>
+</div>
+</section>
+<section id="validate-the-data-2" class="slide level2">
+<h2>Validate the data</h2>
+<p><code>lazy=True</code> will evaluate all checks before raising a <code>SchemaErrors</code> exception.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11" data-code-line-numbers="3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a><span class="cf">try</span>:</span>
+<span id="cb11-2"><a href="#cb11-2"></a>    Schema.validate(invalid_data, lazy<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="cf">except</span> pa.errors.SchemaErrors <span class="im">as</span> exc:</span>
+<span id="cb11-4"><a href="#cb11-4"></a>    failure_cases <span class="op">=</span> exc.failure_cases</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">schema_context</th>
+<th data-quarto-table-cell-role="th">column</th>
+<th data-quarto-table-cell-role="th">check</th>
+<th data-quarto-table-cell-role="th">check_number</th>
+<th data-quarto-table-cell-role="th">failure_case</th>
+<th data-quarto-table-cell-role="th">index</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Column</td>
+<td>item</td>
+<td>isin(['apple', 'orange', 'banana'])</td>
+<td>0</td>
+<td>squash</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Column</td>
+<td>price</td>
+<td>not_nullable</td>
+<td>None</td>
+<td>NaN</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Column</td>
+<td>price</td>
+<td>greater_than_or_equal_to(0)</td>
+<td>0</td>
+<td>-1000.0</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="functional-validation" class="slide level2">
+<h2>Functional Validation</h2>
+<p>Add type hints and a <code>pandera.check_types</code> decorator to your functions</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12" data-code-line-numbers="3,4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a><span class="im">from</span> pandera.typing <span class="im">import</span> DataFrame</span>
+<span id="cb12-2"><a href="#cb12-2"></a></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="at">@pa.check_types</span>(lazy<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="kw">def</span> clean_data(raw_data) <span class="op">-&gt;</span> DataFrame[Schema]:</span>
+<span id="cb12-5"><a href="#cb12-5"></a>    <span class="cf">return</span> raw_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="functional-validation-1" class="slide level2">
+<h2>Functional Validation</h2>
+<p>The <code>clean_data</code> function now validates data every time it’s called:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    clean_data(invalid_data)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> pa.errors.SchemaErrors <span class="im">as</span> exc:</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    failure_cases <span class="op">=</span> exc.failure_cases</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">schema_context</th>
+<th data-quarto-table-cell-role="th">column</th>
+<th data-quarto-table-cell-role="th">check</th>
+<th data-quarto-table-cell-role="th">check_number</th>
+<th data-quarto-table-cell-role="th">failure_case</th>
+<th data-quarto-table-cell-role="th">index</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Column</td>
+<td>item</td>
+<td>isin(['apple', 'orange', 'banana'])</td>
+<td>0</td>
+<td>squash</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Column</td>
+<td>price</td>
+<td>not_nullable</td>
+<td>None</td>
+<td>NaN</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Column</td>
+<td>price</td>
+<td>greater_than_or_equal_to(0)</td>
+<td>0</td>
+<td>-1000.0</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="updating-the-schema" class="slide level2">
+<h2>Updating the Schema</h2>
+<p>“But squash <em>is</em> a valid item!”</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14" data-code-line-numbers="3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">class</span> Schema(pa.DataFrameModel):</span>
+<span id="cb14-2"><a href="#cb14-2"></a>    item: <span class="bu">str</span> <span class="op">=</span> pa.Field(</span>
+<span id="cb14-3"><a href="#cb14-3"></a>        isin<span class="op">=</span>[<span class="st">"apple"</span>, <span class="st">"orange"</span>, <span class="st">"banana"</span>, <span class="st">"squash"</span>],</span>
+<span id="cb14-4"><a href="#cb14-4"></a>        nullable<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb14-5"><a href="#cb14-5"></a>    )</span>
+<span id="cb14-6"><a href="#cb14-6"></a>    price: <span class="bu">float</span> <span class="op">=</span> pa.Field(</span>
+<span id="cb14-7"><a href="#cb14-7"></a>        ge<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb14-8"><a href="#cb14-8"></a>        nullable<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb14-9"><a href="#cb14-9"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="schema-options" class="slide level2">
+<h2>Schema Options</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="annotated-cell-12"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-12-1"><a href="#annotated-cell-12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SchemaOptions(pa.DataFrameModel):</span>
+<span id="annotated-cell-12-2"><a href="#annotated-cell-12-2" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="annotated-cell-12-3"><a href="#annotated-cell-12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-12-4"><a href="#annotated-cell-12-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">class</span> Config:</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="1">1</button><span id="annotated-cell-12-5" class="code-annotation-target"><a href="#annotated-cell-12-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">coerce</span> <span class="op">=</span> <span class="va">True</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="2">2</button><span id="annotated-cell-12-6" class="code-annotation-target"><a href="#annotated-cell-12-6" aria-hidden="true" tabindex="-1"></a>        ordered <span class="op">=</span> <span class="va">True</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="3">3</button><span id="annotated-cell-12-7" class="code-annotation-target"><a href="#annotated-cell-12-7" aria-hidden="true" tabindex="-1"></a>        strict <span class="op">=</span> <span class="va">True</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="4">4</button><span id="annotated-cell-12-8" class="code-annotation-target"><a href="#annotated-cell-12-8" aria-hidden="true" tabindex="-1"></a>        drop_invalid_rows <span class="op">=</span> <span class="va">True</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="5">5</button><span id="annotated-cell-12-9" class="code-annotation-target"><a href="#annotated-cell-12-9" aria-hidden="true" tabindex="-1"></a>        unique_column_names <span class="op">=</span> <span class="va">True</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-12" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-12" data-code-annotation="1" data-code-lines="5">Attempts to coerce raw data into specified types</span>
+</dd>
+<dt data-target-cell="annotated-cell-12" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-12" data-code-annotation="2" data-code-lines="6">Makes sure columns are order as specified in schema</span>
+</dd>
+<dt data-target-cell="annotated-cell-12" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-12" data-code-annotation="3" data-code-lines="7">Makes sure all columns specified in the schema are present</span>
+</dd>
+<dt data-target-cell="annotated-cell-12" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-12" data-code-annotation="4" data-code-lines="8">Drops rows with invalid values</span>
+</dd>
+<dt data-target-cell="annotated-cell-12" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-cell="annotated-cell-12" data-code-annotation="5" data-code-lines="9">Makes sure column names are unique</span>
+</dd>
+</dl>
+</div>
+</div>
+</section>
+<section id="built-in-checks" class="slide level2">
+<h2>Built-in Checks</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="annotated-cell-13"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-13-1"><a href="#annotated-cell-13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SchemaBuiltInChecks(pa.DataFrameModel):</span>
+<span id="annotated-cell-13-2"><a href="#annotated-cell-13-2" aria-hidden="true" tabindex="-1"></a>    column_1: <span class="bu">str</span> <span class="op">=</span> pa.Field(</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="1">1</button><span id="annotated-cell-13-3" class="code-annotation-target"><a href="#annotated-cell-13-3" aria-hidden="true" tabindex="-1"></a>        isin<span class="op">=</span>[<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>],</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="2">2</button><span id="annotated-cell-13-4" class="code-annotation-target"><a href="#annotated-cell-13-4" aria-hidden="true" tabindex="-1"></a>        unique_values_eq<span class="op">=</span>[<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>],</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="3">3</button><span id="annotated-cell-13-5" class="code-annotation-target"><a href="#annotated-cell-13-5" aria-hidden="true" tabindex="-1"></a>        str_matches<span class="op">=</span><span class="st">"pattern"</span>,</span>
+<span id="annotated-cell-13-6"><a href="#annotated-cell-13-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="annotated-cell-13-7"><a href="#annotated-cell-13-7" aria-hidden="true" tabindex="-1"></a>    column_2: <span class="bu">float</span> <span class="op">=</span> pa.Field(</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="4">4</button><span id="annotated-cell-13-8" class="code-annotation-target"><a href="#annotated-cell-13-8" aria-hidden="true" tabindex="-1"></a>        in_range<span class="op">=</span>{<span class="st">"min_value"</span>: <span class="dv">0</span>, <span class="st">"max_value"</span>: <span class="dv">100</span>},</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="5">5</button><span id="annotated-cell-13-9" class="code-annotation-target"><a href="#annotated-cell-13-9" aria-hidden="true" tabindex="-1"></a>        le<span class="op">=</span><span class="dv">100</span>,</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="6">6</button><span id="annotated-cell-13-10" class="code-annotation-target"><a href="#annotated-cell-13-10" aria-hidden="true" tabindex="-1"></a>        ne<span class="op">=-</span><span class="dv">1</span>,</span>
+<span id="annotated-cell-13-11"><a href="#annotated-cell-13-11" aria-hidden="true" tabindex="-1"></a>    )</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-13" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-13" data-code-annotation="1" data-code-lines="3">Values are in a finite set</span>
+</dd>
+<dt data-target-cell="annotated-cell-13" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-13" data-code-annotation="2" data-code-lines="4">Unique set of values are equal to a finite set</span>
+</dd>
+<dt data-target-cell="annotated-cell-13" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-13" data-code-annotation="3" data-code-lines="5">String matches a pattern</span>
+</dd>
+<dt data-target-cell="annotated-cell-13" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-13" data-code-annotation="4" data-code-lines="8">Values are within some range</span>
+</dd>
+<dt data-target-cell="annotated-cell-13" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-cell="annotated-cell-13" data-code-annotation="5" data-code-lines="9">Values are less than some maximum</span>
+</dd>
+<dt data-target-cell="annotated-cell-13" data-target-annotation="6">6</dt>
+<dd>
+<span data-code-cell="annotated-cell-13" data-code-annotation="6" data-code-lines="10">Values are not equal to some constant</span>
+</dd>
+</dl>
+</div>
+</div>
+</section>
+<section id="custom-checks" class="slide level2">
+<h2>Custom Checks</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="annotated-cell-14"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-14-1"><a href="#annotated-cell-14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SchemaCustomChecks(pa.DataFrameModel):</span>
+<span id="annotated-cell-14-2"><a href="#annotated-cell-14-2" aria-hidden="true" tabindex="-1"></a>    column_1: <span class="bu">float</span></span>
+<span id="annotated-cell-14-3"><a href="#annotated-cell-14-3" aria-hidden="true" tabindex="-1"></a>    column_2: <span class="bu">float</span></span>
+<span id="annotated-cell-14-4"><a href="#annotated-cell-14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-14-5"><a href="#annotated-cell-14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">@pa.check</span>(<span class="st">"column_1"</span>, <span class="st">"column_2"</span>)</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="1">1</button><span id="annotated-cell-14-6" class="code-annotation-target"><a href="#annotated-cell-14-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> mean_is_between(cls, series):</span>
+<span id="annotated-cell-14-7"><a href="#annotated-cell-14-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span> <span class="op">&lt;=</span> series.mean() <span class="op">&lt;=</span> <span class="dv">100</span></span>
+<span id="annotated-cell-14-8"><a href="#annotated-cell-14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-14-9"><a href="#annotated-cell-14-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">@pa.dataframe_check</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="2">2</button><span id="annotated-cell-14-10" class="code-annotation-target"><a href="#annotated-cell-14-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> col1_lt_col2(cls, df):</span>
+<span id="annotated-cell-14-11"><a href="#annotated-cell-14-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> df[<span class="st">"column_1"</span>] <span class="op">&lt;</span> df[<span class="st">"column_2"</span>]</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-14" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-14" data-code-annotation="1" data-code-lines="6">Custom column-level check makes sure the mean of that column is within some range</span>
+</dd>
+<dt data-target-cell="annotated-cell-14" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-14" data-code-annotation="2" data-code-lines="10">Custom dataframe-level check makes sure <code>column_1</code> is less than <code>column_2</code></span>
+</dd>
+</dl>
+</div>
+</div>
+</section>
+<section id="regex-column-matching" class="slide level2">
+<h2>Regex Column-matching</h2>
+<p>Suppose I have column names that match some pattern:</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">num_col_1</th>
+<th data-quarto-table-cell-role="th">num_col_2</th>
+<th data-quarto-table-cell-role="th">num_col_3</th>
+<th data-quarto-table-cell-role="th">num_col_n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>0.013078</td>
+<td>0.575461</td>
+<td>0.877027</td>
+<td>-1.020023</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>-1.876972</td>
+<td>1.354649</td>
+<td>-1.701805</td>
+<td>-0.345417</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>0.208367</td>
+<td>0.849357</td>
+<td>2.589748</td>
+<td>0.372110</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15" data-code-line-numbers="2,4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">class</span> RegexSchema(pa.DataFrameModel):</span>
+<span id="cb15-2"><a href="#cb15-2"></a>    num_columns: <span class="bu">float</span> <span class="op">=</span> pa.Field(alias<span class="op">=</span><span class="st">"num_col_.+"</span>, regex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb15-3"><a href="#cb15-3"></a></span>
+<span id="cb15-4"><a href="#cb15-4"></a>    <span class="at">@pa.check</span>(<span class="st">"num_col_.+"</span>, regex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb15-5"><a href="#cb15-5"></a>    <span class="kw">def</span> custom_check(cls, series):</span>
+<span id="cb15-6"><a href="#cb15-6"></a>        ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="meta-comment" class="slide level2">
+<h2>Meta Comment</h2>
+<p>This presentation quarto document is validated by pandera 🤯</p>
+
+<img data-src="https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy-downsized-large.gif" class="r-stretch"></section>
+<section id="using-pandera-in-r-via-reticulate" class="slide level2">
+<h2>Using <code>pandera</code> in R via <code>reticulate</code></h2>
+<div class="fragment">
+<p>🐘 What about <code>pointblank</code> or <code>validate</code>?</p>
+<div>
+<ul>
+<li class="fragment">If you’re already using <code>pandera</code>, reuse those schemas in an R runtime ♻️.</li>
+<li class="fragment">If the <code>pandera</code> programming model somehow fits better in your head 🧠.</li>
+<li class="fragment">You just want R and Python to get along 🤝</li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">use_condaenv</span>(<span class="st">"pandera-posit-2023"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <aside class="notes">
 <p>Now this is all well and good if you’re using Python, but what about if you’re using R?</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="using-pandera-in-r-via-reticulate" class="slide level2 smaller">
-<h2>Using <code>pandera</code> in R via <code>reticulate</code></h2>
-<aside class="notes">
+<p>…</p>
 <p>I went down this path with some trepidation that pandera will break in R, but…</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -985,96 +1373,364 @@ Niels Bantilan
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">library</span>(reticulate)</span>
-<span id="cb12-2"><a href="#cb12-2"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb12-3"><a href="#cb12-3"></a></span>
-<span id="cb12-4"><a href="#cb12-4"></a><span class="fu">use_condaenv</span>(<span class="st">"pandera-posit-2023"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="it-just-works" class="slide level2 smaller">
+<section id="it-just-works" class="slide level2">
 <h2>It just works! 🔥</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>r_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb13-2"><a href="#cb13-2"></a>    <span class="at">item =</span> <span class="fu">c</span>(<span class="st">"applee"</span>, <span class="st">"orange"</span>, <span class="st">"orange"</span>),</span>
-<span id="cb13-3"><a href="#cb13-3"></a>    <span class="at">price =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="cn">NaN</span>)</span>
-<span id="cb13-4"><a href="#cb13-4"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>valid_r_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">item =</span> <span class="fu">c</span>(<span class="st">"apple"</span>, <span class="st">"orange"</span>, <span class="st">"orange"</span>),</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">price =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.25</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>validated_r_data <span class="ot">&lt;-</span> py<span class="sc">$</span>Schema<span class="sc">$</span><span class="fu">validate</span>(valid_r_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>py<span class="sc">$</span>Schema<span class="sc">$</span><span class="fu">validate</span>(py<span class="sc">$</span>transactions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>    item price
-1 orange  0.75
-2  apple  0.50
-3 banana  0.25</code></pre>
+<div class="cell-output-display">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">item</th>
+<th style="text-align: right;">price</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">apple</td>
+<td style="text-align: right;">0.50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">orange</td>
+<td style="text-align: right;">0.75</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">orange</td>
+<td style="text-align: right;">0.25</td>
+</tr>
+</tbody>
+</table>
 </div>
+</div>
+</div>
+<div class="fragment">
+<p>⚠️ <strong>Warning:</strong> this hasn’t been comprehensively tested</p>
 </div>
 </section>
-<section id="catch-the-python-exception" class="slide level2 smaller">
+<section id="catch-the-python-exception" class="slide level2">
 <h2>Catch the Python Exception</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>validated_data <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>({</span>
-<span id="cb16-2"><a href="#cb16-2"></a>    py<span class="sc">$</span>Schema<span class="sc">$</span><span class="fu">validate</span>(r_data, <span class="at">lazy=</span><span class="cn">TRUE</span>)</span>
-<span id="cb16-3"><a href="#cb16-3"></a>}, <span class="at">error=</span><span class="cf">function</span>(err) {</span>
-<span id="cb16-4"><a href="#cb16-4"></a>    exception <span class="ot">&lt;&lt;-</span> <span class="fu">attr</span>(<span class="fu">py_last_error</span>(), <span class="st">"exception"</span>)</span>
-<span id="cb16-5"><a href="#cb16-5"></a>    <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
-<span id="cb16-6"><a href="#cb16-6"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18" data-code-line-numbers="2,3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>invalid_r_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb18-2"><a href="#cb18-2"></a>    <span class="at">item =</span> <span class="fu">c</span>(<span class="st">"applee"</span>, <span class="st">"orange"</span>, <span class="st">"orange"</span>),</span>
+<span id="cb18-3"><a href="#cb18-3"></a>    <span class="at">price =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="cn">NaN</span>)</span>
+<span id="cb18-4"><a href="#cb18-4"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="annotated-cell-19"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-19-1"><a href="#annotated-cell-19-1" aria-hidden="true" tabindex="-1"></a>validated_data <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>({</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="1">1</button><span id="annotated-cell-19-2" class="code-annotation-target"><a href="#annotated-cell-19-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(py<span class="sc">$</span>Schema<span class="sc">$</span><span class="fu">validate</span>(invalid_r_data, <span class="at">lazy=</span><span class="cn">TRUE</span>))</span>
+<span id="annotated-cell-19-3"><a href="#annotated-cell-19-3" aria-hidden="true" tabindex="-1"></a>}, <span class="at">error=</span><span class="cf">function</span>(err) {</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="2">2</button><span id="annotated-cell-19-4" class="code-annotation-target"><a href="#annotated-cell-19-4" aria-hidden="true" tabindex="-1"></a>    exception <span class="ot">&lt;&lt;-</span> <span class="fu">attr</span>(<span class="fu">py_last_error</span>(), <span class="st">"exception"</span>)</span>
+<span id="annotated-cell-19-5"><a href="#annotated-cell-19-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
+<span id="annotated-cell-19-6"><a href="#annotated-cell-19-6" aria-hidden="true" tabindex="-1"></a>})</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-19" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-19" data-code-annotation="1" data-code-lines="2">Use <code>py</code> to access variables in the Python namespace</span>
+</dd>
+<dt data-target-cell="annotated-cell-19" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-19" data-code-annotation="2" data-code-lines="4">Use the <code>py_last_error</code> function to get the last exception raised in Python</span>
+</dd>
+</dl>
+</div>
+</div>
 </div>
 <div class="fragment">
 <p>Get the failure cases</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># get failed rows don't forget the 0- to 1-based index conversion!</span></span>
-<span id="cb17-2"><a href="#cb17-2"></a>failure_cases <span class="ot">&lt;-</span> exception<span class="sc">$</span>failure_cases</span>
-<span id="cb17-3"><a href="#cb17-3"></a>failed_rows <span class="ot">&lt;-</span> <span class="fu">as.character</span>(failure_cases<span class="sc">$</span>index <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb17-4"><a href="#cb17-4"></a><span class="fu">print</span>(failure_cases)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  schema_context column                               check check_number
-1         Column   item isin(['apple', 'orange', 'banana'])            0
-2         Column  price                        not_nullable         NULL
-  failure_case index
-1       applee     0
-2         &lt;NA&gt;     2</code></pre>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>failure_cases <span class="ot">&lt;-</span> exception<span class="sc">$</span>failure_cases</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(failure_cases)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table>
+<colgroup>
+<col style="width: 15%">
+<col style="width: 7%">
+<col style="width: 46%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">schema_context</th>
+<th style="text-align: left;">column</th>
+<th style="text-align: left;">check</th>
+<th style="text-align: left;">check_number</th>
+<th style="text-align: left;">failure_case</th>
+<th style="text-align: right;">index</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Column</td>
+<td style="text-align: left;">item</td>
+<td style="text-align: left;">isin([‘apple’, ‘orange’, ‘banana’, ‘squash’])</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">applee</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Column</td>
+<td style="text-align: left;">price</td>
+<td style="text-align: left;">not_nullable</td>
+<td style="text-align: left;">NULL</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 </section>
-<section id="filter-out-invalid-rows" class="slide level2 smaller">
-<h2>Filter out Invalid Rows</h2>
+<section id="synthesize-test-data-with-pandera" class="slide level2">
+<h2>Synthesize Test Data with Pandera</h2>
+<p>Just call <code>Schema$example</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># filter the data to only include valid rows</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a>filtered_data <span class="ot">&lt;-</span> r_data <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span>(<span class="fu">rownames</span>(r_data) <span class="sc">%in%</span> failed_rows))</span>
-<span id="cb19-3"><a href="#cb19-3"></a><span class="fu">print</span>(filtered_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>    item price
-1 orange  0.75</code></pre>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>example_data <span class="ot">&lt;-</span> py<span class="sc">$</span>Schema<span class="sc">$</span><span class="fu">example</span>(<span class="at">size =</span> <span class="fu">as.integer</span>(<span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">item</th>
+<th style="text-align: right;">price</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">apple</td>
+<td style="text-align: right;">1.9000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">apple</td>
+<td style="text-align: right;">0.3333333</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">apple</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">squash</td>
+<td style="text-align: right;">0.0000001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">apple</td>
+<td style="text-align: right;">1.9000000</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 </section>
-<section id="get-pandera-set-up-on-your-stack-in-5-minutes" class="slide level2 smaller">
-<h2>Get <code>pandera</code> set up on your stack in 5 minutes</h2>
-<p>Install pandera</p>
+<section id="unit-testing" class="slide level2">
+<h2>Unit testing</h2>
+<p>Suppose I want to add a <code>returned</code> column to my dataset…</p>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Before data processing</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Schema(pa.DataFrameModel):</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    item: <span class="bu">str</span> <span class="op">=</span> pa.Field(isin<span class="op">=</span>[<span class="st">"apple"</span>, <span class="st">"orange"</span>, <span class="st">"banana"</span>], nullable<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    price: <span class="bu">float</span> <span class="op">=</span> pa.Field(ge<span class="op">=</span><span class="dv">0</span>, nullable<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment">
+<p><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># After data processing</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ProcessedSchema(Schema):</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    returned: <span class="bu">bool</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="unit-testing-1" class="slide level2">
+<h2>Unit testing</h2>
+<p>Defining a <code>process_data</code> function</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>process_data <span class="ot">&lt;-</span> <span class="cf">function</span>(data, returned) {</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    transformed <span class="ot">&lt;-</span> py<span class="sc">$</span>Schema<span class="sc">$</span><span class="fu">validate</span>(data, <span class="at">lazy=</span><span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mutate</span>(<span class="at">returned=</span>returned)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(py<span class="sc">$</span>ProcessedSchema<span class="sc">$</span><span class="fu">validate</span>(transformed, <span class="at">lazy=</span><span class="cn">TRUE</span>))</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="unit-testing-2" class="slide level2">
+<h2>Unit testing</h2>
+<p>Our test for <code>process_data</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="annotated-cell-25"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-25-1"><a href="#annotated-cell-25-1" aria-hidden="true" tabindex="-1"></a>test_process_data <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-25" data-target-annotation="1">1</button><span id="annotated-cell-25-2" class="code-annotation-target"><a href="#annotated-cell-25-2" aria-hidden="true" tabindex="-1"></a>    mock_data <span class="ot">&lt;-</span> py<span class="sc">$</span>Schema<span class="sc">$</span><span class="fu">example</span>(<span class="at">size =</span> <span class="fu">as.integer</span>(<span class="dv">3</span>))</span>
+<span id="annotated-cell-25-3"><a href="#annotated-cell-25-3" aria-hidden="true" tabindex="-1"></a>    failed <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="annotated-cell-25-4"><a href="#annotated-cell-25-4" aria-hidden="true" tabindex="-1"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-25" data-target-annotation="2">2</button><span id="annotated-cell-25-5" class="code-annotation-target"><a href="#annotated-cell-25-5" aria-hidden="true" tabindex="-1"></a>    output <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>({</span>
+<span id="annotated-cell-25-6"><a href="#annotated-cell-25-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">process_data</span>(mock_data, <span class="cn">FALSE</span>)</span>
+<span id="annotated-cell-25-7"><a href="#annotated-cell-25-7" aria-hidden="true" tabindex="-1"></a>    }, <span class="at">error=</span><span class="cf">function</span>(err) {</span>
+<span id="annotated-cell-25-8"><a href="#annotated-cell-25-8" aria-hidden="true" tabindex="-1"></a>        exception <span class="ot">&lt;&lt;-</span> <span class="fu">attr</span>(<span class="fu">py_last_error</span>(), <span class="st">"exception"</span>)</span>
+<span id="annotated-cell-25-9"><a href="#annotated-cell-25-9" aria-hidden="true" tabindex="-1"></a>        failed <span class="ot">&lt;&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="annotated-cell-25-10"><a href="#annotated-cell-25-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
+<span id="annotated-cell-25-11"><a href="#annotated-cell-25-11" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="annotated-cell-25-12"><a href="#annotated-cell-25-12" aria-hidden="true" tabindex="-1"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-25" data-target-annotation="3">3</button><span id="annotated-cell-25-13" class="code-annotation-target"><a href="#annotated-cell-25-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (failed) {</span>
+<span id="annotated-cell-25-14"><a href="#annotated-cell-25-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">print</span>(<span class="st">"process_data test failed ❌"</span>)</span>
+<span id="annotated-cell-25-15"><a href="#annotated-cell-25-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">kable</span>(exception<span class="sc">$</span>failure_cases)</span>
+<span id="annotated-cell-25-16"><a href="#annotated-cell-25-16" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="annotated-cell-25-17"><a href="#annotated-cell-25-17" aria-hidden="true" tabindex="-1"></a>        <span class="fu">print</span>(<span class="st">"process_data test passes ✅"</span>)</span>
+<span id="annotated-cell-25-18"><a href="#annotated-cell-25-18" aria-hidden="true" tabindex="-1"></a>        <span class="fu">kable</span>(output)</span>
+<span id="annotated-cell-25-19"><a href="#annotated-cell-25-19" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="annotated-cell-25-20"><a href="#annotated-cell-25-20" aria-hidden="true" tabindex="-1"></a>}</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-25" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-25" data-code-annotation="1" data-code-lines="2">Create a mock dataset</span>
+</dd>
+<dt data-target-cell="annotated-cell-25" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-25" data-code-annotation="2" data-code-lines="5,11">Try/catch an error when calling <code>process_data</code></span>
+</dd>
+<dt data-target-cell="annotated-cell-25" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-25" data-code-annotation="3" data-code-lines="13,19">Report success or failure</span>
+</dd>
+</dl>
+</div>
+</div>
+</section>
+<section id="unit-testing-3" class="slide level2">
+<h2>Unit testing</h2>
+<p>Run <code>test_process_data</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">test_process_data</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "process_data test passes ✅"</code></pre>
+</div>
+<div class="cell-output-display">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">item</th>
+<th style="text-align: right;">price</th>
+<th style="text-align: left;">returned</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">banana</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">apple</td>
+<td style="text-align: right;">0.9999900</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">banana</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="catch-bugs-early" class="slide level2">
+<h2>Catch bugs early 🐞</h2>
+<p>Suppose there’s a bug in <code>process_data</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>process_data <span class="ot">&lt;-</span> <span class="cf">function</span>(data, returned) {</span>
+<span id="cb26-2"><a href="#cb26-2"></a>    transformed <span class="ot">&lt;-</span> py<span class="sc">$</span>Schema<span class="sc">$</span><span class="fu">validate</span>(data, <span class="at">lazy=</span><span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb26-3"><a href="#cb26-3"></a>        <span class="fu">mutate</span>(<span class="at">returnd=</span>returned)</span>
+<span id="cb26-4"><a href="#cb26-4"></a></span>
+<span id="cb26-5"><a href="#cb26-5"></a>    <span class="fu">return</span>(py<span class="sc">$</span>ProcessedSchema<span class="sc">$</span><span class="fu">validate</span>(transformed, <span class="at">lazy=</span><span class="cn">TRUE</span>))</span>
+<span id="cb26-6"><a href="#cb26-6"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="catch-bugs-early-1" class="slide level2">
+<h2>Catch bugs early 🐞</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">test_process_data</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "process_data test failed ❌"</code></pre>
+</div>
+<div class="cell-output-display">
+<table>
+<colgroup>
+<col style="width: 21%">
+<col style="width: 9%">
+<col style="width: 26%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 8%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">schema_context</th>
+<th style="text-align: left;">column</th>
+<th style="text-align: left;">check</th>
+<th style="text-align: left;">check_number</th>
+<th style="text-align: left;">failure_case</th>
+<th style="text-align: left;">index</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">DataFrameSchema</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">column_in_dataframe</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">returned</td>
+<td style="text-align: left;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<p>Data validation is not only about testing the actual data, but also the functions that produce them.</p>
+</section>
+<section id="get-started-with-pandera-in-10-minutes" class="slide level2 smaller">
+<h2>Get started with <code>pandera</code> in 10 minutes</h2>
 <div class="columns">
 <div class="column">
 <p>Python</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1"></a><span class="ex">pip</span> install pandera</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install pandera</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <p>R</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">install.packages</span>(<span class="st">"reticulate"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"reticulate"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div class="fragment">
 <p>Define and import schema</p>
 <div class="columns">
 <div class="column">
-<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1"></a><span class="co"># schema.py</span></span>
-<span id="cb23-2"><a href="#cb23-2"></a><span class="im">import</span> pandera <span class="im">as</span> pa</span>
-<span id="cb23-3"><a href="#cb23-3"></a></span>
-<span id="cb23-4"><a href="#cb23-4"></a><span class="kw">class</span> Schema(pa.DataFrameModel):</span>
-<span id="cb23-5"><a href="#cb23-5"></a>    col1: <span class="bu">int</span></span>
-<span id="cb23-6"><a href="#cb23-6"></a>    col2: <span class="bu">float</span></span>
-<span id="cb23-7"><a href="#cb23-7"></a>    col2: <span class="bu">str</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># schema.py</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandera <span class="im">as</span> pa</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Schema(pa.DataFrameModel):</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    col1: <span class="bu">int</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    col2: <span class="bu">float</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    col2: <span class="bu">str</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
-<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>schema <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="st">"schema"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>schema <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="st">"schema"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -1082,29 +1738,20 @@ Niels Bantilan
 <p>Validate away!</p>
 <div class="columns">
 <div class="column">
-<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1"></a>python_dataframe <span class="op">=</span> ...</span>
-<span id="cb25-2"><a href="#cb25-2"></a></span>
-<span id="cb25-3"><a href="#cb25-3"></a>Schema.validate(python_dataframe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>python_dataframe <span class="op">=</span> ...</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>Schema.validate(python_dataframe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
-<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">library</span>(reticulate)</span>
-<span id="cb26-2"><a href="#cb26-2"></a></span>
-<span id="cb26-3"><a href="#cb26-3"></a>r_dataframe <span class="ot">&lt;-</span> ...</span>
-<span id="cb26-4"><a href="#cb26-4"></a></span>
-<span id="cb26-5"><a href="#cb26-5"></a>py<span class="sc">$</span>Schema<span class="sc">$</span><span class="fu">validate</span>(py<span class="sc">$</span>python_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>r_dataframe <span class="ot">&lt;-</span> ...</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>py<span class="sc">$</span>Schema<span class="sc">$</span><span class="fu">validate</span>(py<span class="sc">$</span>python_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-</div>
-</section>
-<section class="slide level2">
-
-<p><br> <br> <br></p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="static/data_please_validate_me.jpeg" height="300"></p>
-</figure>
 </div>
 <aside class="notes">
 <p>By understanding what counts as valid data, creating schemas for them, and using these schemas across your Python and R stack, you get a single source of truth for your data schemas. These schemas serve as data documentation for you and your team <em>and</em> run-time validators for your data in both development and production contexts. <code>pandera</code> lowers the barrier to maintaining data hygiene so you can spend less time worrying about the correctness of your data and more time analyzing, visualizing, and modeling them.</p>
+<p>And at the end of the day, I really think that actually, our data wants to be validated, so I think it’s up to us to do that for them.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1116,6 +1763,27 @@ Niels Bantilan
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</div>
+</section>
+<section class="slide level2">
+
+<p><br> <br> <br></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="static/data_please_validate_me.jpeg" height="300"></p>
+</figure>
+</div>
+</section>
+<section id="got-ideas" class="slide level2">
+<h2>💡 Got ideas?</h2>
+<p>Come talk to me!</p>
+<ul>
+<li>email: niels@union.ai</li>
+<li>twitter: <span class="citation" data-cites="cosmicbboy">@cosmicbboy</span></li>
+<li>linkedin: <a href="https://www.linkedin.com/in/nbantilan">https://www.linkedin.com/in/nbantilan</a></li>
+<li>discord: <a href="https://discord.gg/NmKXbZHhDN">https://discord.gg/NmKXbZHhDN</a></li>
+<li>repo: <a href="https://github.com/unionai-oss/pandera">https://github.com/unionai-oss/pandera</a></li>
+</ul>
 <div class="footer footer-default">
 
 </div>
@@ -1476,6 +2144,157 @@ Niels Bantilan
           return note.innerHTML;
         });
       }
+          let selectedAnnoteEl;
+          const selectorForAnnotation = ( cell, annotation) => {
+            let cellAttr = 'data-code-cell="' + cell + '"';
+            let lineAttr = 'data-code-annotation="' +  annotation + '"';
+            const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+            return selector;
+          }
+          const selectCodeLines = (annoteEl) => {
+            const doc = window.document;
+            const targetCell = annoteEl.getAttribute("data-target-cell");
+            const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+            const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+            const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+            const lineIds = lines.map((line) => {
+              return targetCell + "-" + line;
+            })
+            let top = null;
+            let height = null;
+            let parent = null;
+            if (lineIds.length > 0) {
+                //compute the position of the single el (top and bottom and make a div)
+                const el = window.document.getElementById(lineIds[0]);
+                top = el.offsetTop;
+                height = el.offsetHeight;
+                parent = el.parentElement.parentElement;
+              if (lineIds.length > 1) {
+                const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+                const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+                height = bottom - top;
+              }
+              if (top !== null && height !== null && parent !== null) {
+                // cook up a div (if necessary) and position it 
+                let div = window.document.getElementById("code-annotation-line-highlight");
+                if (div === null) {
+                  div = window.document.createElement("div");
+                  div.setAttribute("id", "code-annotation-line-highlight");
+                  div.style.position = 'absolute';
+                  parent.appendChild(div);
+                }
+                div.style.top = top - 2 + "px";
+                div.style.height = height + 4 + "px";
+                let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+                if (gutterDiv === null) {
+                  gutterDiv = window.document.createElement("div");
+                  gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                  gutterDiv.style.position = 'absolute';
+                  const codeCell = window.document.getElementById(targetCell);
+                  const gutter = codeCell.querySelector('.code-annotation-gutter');
+                  gutter.appendChild(gutterDiv);
+                }
+                gutterDiv.style.top = top - 2 + "px";
+                gutterDiv.style.height = height + 4 + "px";
+              }
+              selectedAnnoteEl = annoteEl;
+            }
+          };
+          const unselectCodeLines = () => {
+            const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+            elementsIds.forEach((elId) => {
+              const div = window.document.getElementById(elId);
+              if (div) {
+                div.remove();
+              }
+            });
+            selectedAnnoteEl = undefined;
+          };
+          // Handle positioning of the toggle
+          window.addEventListener(
+          "resize",
+          throttle(() => {
+            elRect = undefined;
+            if (selectedAnnoteEl) {
+              selectCodeLines(selectedAnnoteEl);
+            }
+          }, 10)
+          );
+          function throttle(fn, ms) {
+          let throttle = false;
+          let timer;
+            return (...args) => {
+              if(!throttle) { // first call gets through
+                  fn.apply(this, args);
+                  throttle = true;
+              } else { // all the others get throttled
+                  if(timer) clearTimeout(timer); // cancel #2
+                  timer = setTimeout(() => {
+                    fn.apply(this, args);
+                    timer = throttle = false;
+                  }, ms);
+              }
+            };
+          }
+          const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+          for (let i=0; i<annoteTargets.length; i++) {
+            const annoteTarget = annoteTargets[i];
+            const targetCell = annoteTarget.getAttribute("data-target-cell");
+            const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+            const contentFn = () => {
+              const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+              if (content) {
+                const tipContent = content.cloneNode(true);
+                tipContent.classList.add("code-annotation-tip-content");
+                return tipContent.outerHTML;
+              }
+            }
+            const config = {
+              allowHTML: true,
+              content: contentFn,
+              onShow: (instance) => {
+                selectCodeLines(instance.reference);
+                instance.reference.classList.add('code-annotation-active');
+                window.tippy.hideAll();
+              },
+              onHide: (instance) => {
+                unselectCodeLines();
+                instance.reference.classList.remove('code-annotation-active');
+              },
+              maxWidth: 300,
+              delay: [50, 0],
+              duration: [200, 0],
+              offset: [5, 10],
+              arrow: true,
+              appendTo: function(el) {
+                return el.parentElement.parentElement.parentElement;
+              },
+              interactive: true,
+              interactiveBorder: 10,
+              theme: 'light-border',
+              placement: 'right',
+              popperOptions: {
+                modifiers: [
+                {
+                  name: 'flip',
+                  options: {
+                    flipVariations: false, // true by default
+                    allowedAutoPlacements: ['right'],
+                    fallbackPlacements: ['right', 'top', 'top-start', 'top-end'],
+                  },
+                },
+                {
+                  name: 'preventOverflow',
+                  options: {
+                    mainAxis: false,
+                    altAxis: false
+                  }
+                }
+                ]        
+              }      
+            };
+            window.tippy(annoteTarget, config); 
+          }
       const findCites = (el) => {
         const parentEl = el.parentElement;
         if (parentEl) {
